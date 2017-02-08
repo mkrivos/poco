@@ -10,7 +10,7 @@ cd cmake-build
 
 
 cmake .. -DCMAKE_BUILD_TYPE=Debug -G"NMake Makefiles JOM" -DCMAKE_INSTALL_PREFIX=/opt/rsys/platform -DREMOTING=1
-jom /j3
+jom /j9
 
 jom install
 
@@ -21,7 +21,7 @@ del CMakeCache.txt
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -G"NMake Makefiles JOM" -DCMAKE_INSTALL_PREFIX="/opt/rsys/platform" -DREMOTING=1
 
-jom /j3
+jom /j9
 
 jom install
 
