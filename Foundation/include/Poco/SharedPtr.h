@@ -413,7 +413,7 @@ public:
 		return _pCounter->referenceCount();
 	}
 
-private:
+protected:
 	C* deref() const
 	{
 		if (!_ptr)
@@ -445,7 +445,7 @@ private:
 		_pCounter->duplicate();
 	}
 
-private:
+protected:
 	RC* _pCounter;
 	C*  _ptr;
 
