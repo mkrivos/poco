@@ -70,6 +70,8 @@ Var::Var(Var&& val) noexcept
 
 Var& Var::operator = (Var&& other) noexcept
 {
+	if (_pHolder)
+		delete _pHolder;
 	_pHolder = std::move(other._pHolder);
 	other._pHolder = nullptr;
 	return *this;
