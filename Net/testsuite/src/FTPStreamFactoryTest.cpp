@@ -1,8 +1,6 @@
 //
 // FTPStreamFactoryTest.cpp
 //
-// $Id: //poco/1.4/Net/testsuite/src/FTPStreamFactoryTest.cpp#1 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -163,7 +161,7 @@ void FTPStreamFactoryTest::testUserInfo()
 	StreamCopier::copyStream(*pStr.get(), dataStr);
 	
 	pStr.reset();
-		
+
 	std::string s(dataStr.str());
 	assert (s == "line1\r\nline2\r\n");
 }
@@ -200,9 +198,9 @@ void FTPStreamFactoryTest::testPasswordProvider()
 
 	std::ostringstream dataStr;
 	StreamCopier::copyStream(*pStr.get(), dataStr);
-	
+
 	pStr.reset();
-		
+
 	std::string s(dataStr.str());
 	assert (s == "line1\r\nline2\r\n");
 }

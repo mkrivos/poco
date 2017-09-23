@@ -1,8 +1,6 @@
 //
 // Buffer.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Buffer.h#2 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  Buffer
@@ -113,8 +111,10 @@ public:
 		_capacity(other._capacity),
 		_used(other._used),
 		_ptr(other._ptr),
-		_ownMem(other._ownMem) 
+		_ownMem(other._ownMem)
 	{
+		other._capacity = 0;
+		other._used = 0;
 		other._ownMem = false;
 		other._ptr = nullptr;
 	}
@@ -129,6 +129,8 @@ public:
 			_ptr = other._ptr;
 			_ownMem = other._ownMem;
 
+			other._capacity = 0;
+			other._used = 0;
 			other._ownMem = false;
 			other._ptr = nullptr;
 		}

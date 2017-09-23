@@ -1,8 +1,6 @@
 //
 // LoggingFactoryTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/LoggingFactoryTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -114,7 +112,7 @@ void LoggingFactoryTest::testBuiltins()
 void LoggingFactoryTest::testCustom()
 {
 	std::unique_ptr<LoggingFactory> fact(new LoggingFactory);
-	
+
 	fact->registerChannelClass("CustomChannel", new Instantiator<CustomChannel, Channel>);
 	fact->registerFormatterClass("CustomFormatter", new Instantiator<CustomFormatter, Formatter>);
 

@@ -1,8 +1,6 @@
 //
 // Message.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Message.cpp#2 $
-//
 // Library: Foundation
 // Package: Logging
 // Module:  Message
@@ -88,7 +86,7 @@ Message::Message(const Message& msg):
 }
 
 
-Message::Message(Message&& msg):
+Message::Message(Message&& msg) :
 	_source(std::move(msg._source)),
 	_text(std::move(msg._text)),
 	_prio(std::move(msg._prio)),

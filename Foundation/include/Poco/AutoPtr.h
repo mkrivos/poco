@@ -1,8 +1,6 @@
 //
 // AutoPtr.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/AutoPtr.h#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  AutoPtr
@@ -104,7 +102,7 @@ public:
 	{
 		if (_ptr) _ptr->release();
 	}
-	
+
 	AutoPtr& assign(C* ptr)
 	{
 		if (_ptr != ptr)
@@ -125,7 +123,7 @@ public:
 		}
 		return *this;
 	}
-	
+
 	AutoPtr& assign(const AutoPtr& ptr)
 	{
 		if (&ptr != this)
@@ -136,7 +134,7 @@ public:
 		}
 		return *this;
 	}
-	
+
 	template <class Other> 
 	AutoPtr& assign(const AutoPtr<Other>& ptr)
 	{
@@ -158,7 +156,7 @@ public:
 	{
 		return assign(ptr);
 	}
-	
+
 	template <class Other> 
 	AutoPtr& operator = (const AutoPtr<Other>& ptr)
 	{
@@ -171,11 +169,11 @@ public:
 		return *this;
 	}
 
-	inline void swap(AutoPtr& ptr)
+	void swap(AutoPtr& ptr)
 	{
 		std::swap(_ptr, ptr._ptr);
 	}
-	
+
 	template <class Other> 
 	AutoPtr<Other> cast() const
 		/// Casts the AutoPtr via a dynamic cast to the given type.
