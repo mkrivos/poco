@@ -108,13 +108,6 @@ void TCPServerDispatcher::run()
 			AutoPtr<Notification> pNf = _queue.waitDequeueNotification(idleTime);
 			if (pNf)
 			{
-#if 0
-				std::unique_ptr<TCPServerConnection> pConnection(_pConnectionFactory->createConnection(pCNf->socket()));
-				poco_check_ptr(pConnection.get());
-				beginConnection();
-				pConnection->start();
-				endConnection();
-#else
 				TCPConnectionNotification* pCNf = dynamic_cast<TCPConnectionNotification*>(pNf.get());
 				if (pCNf)
 				{
@@ -124,7 +117,6 @@ void TCPServerDispatcher::run()
 					pConnection->start();
 					endConnection();
 				}
-#endif
 			}
 		}
 		catch (Poco::Exception &exc)
