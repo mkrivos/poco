@@ -400,17 +400,21 @@ private:
 
 	template <typename F, typename T>
 	void POCO_UNUSED checkUpperLimit(const F& from) const
+		/// Throw if casting to lower precission AND 'from' is greater than destination type MAX_VALUE.
+		/// Throw if casting to equal/bigger type AND 'F' is signed AND 'T' is unsigned AND 'from' is less than 0.
 	{
-		if ((sizeof(T) < sizeof(F)) &&
-			(from > static_cast<F>(std::numeric_limits<T>::max())))
+		if ((sizeof(T) < sizeof(F)) && (from > static_cast<F>(std::numeric_limits<T>::max())))
 		{
 			throw RangeException("Value too large.");
 		}
-		else
-		if (from > std::numeric_limits<T>::max())
+		else if (std::numeric_limits<F>::is_signed && !std::numeric_limits<T>::is_signed && from < 0)
 		{
-			throw RangeException("Value too large.");
+			throw RangeException("Value too small.");        
 		}
+		else if (!std::numeric_limits<F>::is_signed && std::numeric_limits<T>::is_signed && static_cast<Poco::UInt64>(from) > std::numeric_limits<T>::max())
+        {
+            throw RangeException("Value too large.");
+        }
 	}
 
 
