@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
-#include "Poco/JSON/pd_json.h"
+#include "pd_json.h"
 
 #define json_error(json, format, ...)                             \
     if (!json->error) {                                           \
