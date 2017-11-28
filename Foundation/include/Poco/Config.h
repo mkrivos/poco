@@ -22,7 +22,10 @@
 // without c++11 support is deprecated.
 
 // Define to enable C++14 support
-// #define POCO_ENABLE_CPP14
+#define POCO_ENABLE_CPP14
+
+// Compatibility
+#define POCO_WIN32_UTF8
 
 
 // Define to force disable C++14 support
@@ -30,7 +33,7 @@
 
 
 // Define to disable implicit linking
-// #define POCO_NO_AUTOMATIC_LIBS
+#define POCO_NO_AUTOMATIC_LIBS
 
 
 // Define to disable automatic initialization
@@ -176,7 +179,7 @@
 
 // Uncomment to disable the use of bundled OpenSSL binaries
 // (Windows only)
-// #define POCO_EXTERNAL_OPENSSL
+#define POCO_EXTERNAL_OPENSSL
 
 
 // Define to prevent changing the suffix for shared libraries
