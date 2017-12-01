@@ -25,7 +25,8 @@
 #define POCO_ENABLE_CPP14
 
 // Compatibility
-#define POCO_WIN32_UTF8
+// Vyriesit ako a ci toto povolit vo WIN, linux to nezere vobec
+//#define POCO_WIN32_UTF8
 
 
 // Define to force disable C++14 support
@@ -179,7 +180,7 @@
 
 // Uncomment to disable the use of bundled OpenSSL binaries
 // (Windows only)
-#define POCO_EXTERNAL_OPENSSL
+//#define POCO_EXTERNAL_OPENSSL
 
 
 // Define to prevent changing the suffix for shared libraries
