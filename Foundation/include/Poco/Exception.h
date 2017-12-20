@@ -31,7 +31,7 @@ class Foundation_API Exception: public std::exception
 	/// in the Poco class library.
 {
 public:
-	Exception(const std::string& msg, int code = 0);
+	explicit Exception(const std::string& msg, int code = 0);
 		/// Creates an exception.
 
 	Exception(const std::string& msg, const std::string& arg, int code = 0);
@@ -89,7 +89,7 @@ public:
 		/// throwing it again.
 
 protected:
-	Exception(int code = 0);
+	explicit Exception(int code = 0);
 		/// Standard constructor.
 
 	void message(const std::string& msg);
@@ -142,8 +142,8 @@ inline int Exception::code() const
 	class API CLS: public BASE														\
 	{																				\
 	public:																			\
-		CLS(int code = CODE);														\
-		CLS(const std::string& msg, int code = CODE);								\
+		explicit CLS(int code = CODE);														\
+		explicit CLS(const std::string& msg, int code = CODE);								\
 		CLS(const std::string& msg, const std::string& arg, int code = CODE);		\
 		CLS(const std::string& msg, const Poco::Exception& exc, int code = CODE);	\
 		CLS(const CLS& exc);														\
