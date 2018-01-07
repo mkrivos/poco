@@ -131,7 +131,7 @@ void Task::postNotification(Notification* pNf)
 	
 	if (_pOwner)
 	{
-		_pOwner->postNotification(pNf);
+		_pOwner->postNotification(AutoPtr<Notification>(pNf));
 	}
 }
 

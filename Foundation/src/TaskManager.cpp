@@ -133,7 +133,7 @@ void TaskManager::postNotification(const Notification::Ptr& pNf)
 
 void TaskManager::taskStarted(Task* pTask)
 {
-	_nc.postNotification(new TaskStartedNotification(pTask));
+	_nc.postNotification(AutoPtr<TaskStartedNotification>(new TaskStartedNotification(pTask)));
 }
 
 
@@ -145,14 +145,14 @@ void TaskManager::taskProgress(Task* pTask, float progress)
 	{
 		_lastProgressNotification.update();
 		lock.unlock();
-		_nc.postNotification(new TaskProgressNotification(pTask, progress));
+		_nc.postNotification(AutoPtr<TaskProgressNotification>(new TaskProgressNotification(pTask, progress)));
 	}
 }
 
 
 void TaskManager::taskCancelled(Task* pTask)
 {
-	_nc.postNotification(new TaskCancelledNotification(pTask));
+	_nc.postNotification(AutoPtr<TaskCancelledNotification>(new TaskCancelledNotification(pTask)));
 }
 
 
@@ -172,13 +172,13 @@ void TaskManager::taskFinished(Task* pTask)
 	}
 	lock.unlock();
 
-	_nc.postNotification(new TaskFinishedNotification(pTask));
+	_nc.postNotification(AutoPtr<TaskFinishedNotification>(new TaskFinishedNotification(pTask)));
 }
 
 
 void TaskManager::taskFailed(Task* pTask, const Exception& exc)
 {
-	_nc.postNotification(new TaskFailedNotification(pTask, exc));
+	_nc.postNotification(AutoPtr<TaskFailedNotification>(new TaskFailedNotification(pTask, exc)));
 }
 
 

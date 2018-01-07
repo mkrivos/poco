@@ -74,7 +74,7 @@ void ActiveDispatcher::start(ActiveRunnableBase::Ptr pRunnable)
 {
 	poco_check_ptr (pRunnable);
 
-	_queue.enqueueNotification(new MethodNotification(pRunnable));
+	_queue.enqueueNotification(AutoPtr<Notification>(new MethodNotification(pRunnable)));
 }
 
 
@@ -86,7 +86,7 @@ void ActiveDispatcher::cancel()
 
 void ActiveDispatcher::run()
 {
-	AutoPtr<Notification> pNf = _queue.waitDequeueNotification();
+	AutoPtr<Notification> pNf = AutoPtr<Notification>(_queue.waitDequeueNotification());
 	while (pNf && !dynamic_cast<StopNotification*>(pNf.get()))
 	{
 		MethodNotification* pMethodNf = dynamic_cast<MethodNotification*>(pNf.get());
@@ -105,7 +105,7 @@ void ActiveDispatcher::stop()
 {
 	_queue.clear();
 	_queue.wakeUpAll();
-	_queue.enqueueNotification(new StopNotification);
+	_queue.enqueueNotification(AutoPtr<Notification>(new StopNotification));
 	_thread.join();
 }
 

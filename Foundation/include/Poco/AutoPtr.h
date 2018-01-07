@@ -73,7 +73,7 @@ public:
 	{
 	}
 
-	AutoPtr(C* ptr): _ptr(ptr)
+	/*explicit*/ AutoPtr(C* ptr): _ptr(ptr)
 	{
 	}
 

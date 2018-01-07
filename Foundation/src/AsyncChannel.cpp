@@ -113,7 +113,7 @@ void AsyncChannel::log(const Message& msg)
 {
 	open();
 
-	_queue.enqueueNotification(new MessageNotification(msg));
+	_queue.enqueueNotification(AutoPtr<Notification>(new MessageNotification(msg)));
 }
 
 
@@ -130,7 +130,7 @@ void AsyncChannel::setProperty(const std::string& name, const std::string& value
 
 void AsyncChannel::run()
 {
-	AutoPtr<Notification> nf = _queue.waitDequeueNotification();
+	AutoPtr<Notification> nf = AutoPtr<Notification>(_queue.waitDequeueNotification());
 	while (nf)
 	{
 		MessageNotification* pNf = dynamic_cast<MessageNotification*>(nf.get());

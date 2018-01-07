@@ -78,7 +78,7 @@ AutoPtrTest::~AutoPtrTest()
 void AutoPtrTest::testAutoPtr()
 {
 	{
-		AutoPtr<TestObj> ptr = new TestObj;
+		AutoPtr<TestObj> ptr = AutoPtr<TestObj>(new TestObj);
 		assert (ptr->rc() == 1);
 		AutoPtr<TestObj> ptr2 = ptr;
 		assert (ptr->rc() == 2);
@@ -111,7 +111,7 @@ void AutoPtrTest::testOps()
 	}
 	assert (pTO1 < pTO2);
 	ptr1 = pTO1;
-	AutoPtr<TestObj> ptr2 = pTO2;
+	AutoPtr<TestObj> ptr2 = AutoPtr<TestObj>(pTO2);
 	AutoPtr<TestObj> ptr3 = ptr1;
 	AutoPtr<TestObj> ptr4;
 	assert (ptr1.get() == pTO1);
