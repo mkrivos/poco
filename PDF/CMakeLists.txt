@@ -36,6 +36,7 @@ endif (POCO_UNBUNDLED)
 # with an unbundled version of hpdf
 # hpdf
 POCO_SOURCES( SRCS hpdf
+    src/hpdf_3dmeasure.c
     src/hpdf_annotation.c
     src/hpdf_array.c
     src/hpdf_binary.c
@@ -50,9 +51,11 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_encoder_cnt.c
     src/hpdf_encoder_jp.c
     src/hpdf_encoder_kr.c
+    src/hpdf_encoder_utf.c
     src/hpdf_encrypt.c
     src/hpdf_encryptdict.c
     src/hpdf_error.c
+    src/hpdf_exdata.c
     src/hpdf_ext_gstate.c
     src/hpdf_font.c
     src/hpdf_font_cid.c
@@ -69,11 +72,13 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_font_type1.c
     src/hpdf_gstate.c
     src/hpdf_image.c
+    src/hpdf_image_ccitt.c
     src/hpdf_image_png.c
     src/hpdf_info.c
     src/hpdf_list.c
     src/hpdf_mmgr.c
     src/hpdf_name.c
+    src/hpdf_namedict.c
     src/hpdf_null.c
     src/hpdf_number.c
     src/hpdf_objects.c
@@ -81,9 +86,11 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_page_label.c
     src/hpdf_page_operator.c
     src/hpdf_pages.c
+    src/hpdf_pdfa.c
     src/hpdf_real.c
     src/hpdf_streams.c
     src/hpdf_string.c
+    src/hpdf_u3d.c
     src/hpdf_utils.c
     src/hpdf_xref.c
 )

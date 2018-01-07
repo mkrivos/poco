@@ -10,7 +10,7 @@
 //
 
 
-#include "WinTestRunner/WinTestRunner.h"
+#include "Poco/WinTestRunner/WinTestRunner.h"
 #include "PDFTestSuite.h"
 
 
