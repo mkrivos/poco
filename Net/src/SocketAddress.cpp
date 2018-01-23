@@ -37,6 +37,7 @@ using Poco::Net::Impl::IPv6SocketAddressImpl;
 using Poco::Net::Impl::LocalSocketAddressImpl;
 #endif
 
+#define POCO_SOCKETADDRESS_PREFER_IPv4
 
 namespace Poco {
 namespace Net {

@@ -41,7 +41,7 @@
 //
 // Monotonically incremented for any API change/addition
 //
-#define POCO_API_VERSION    20180107
+#define POCO_API_VERSION    20180120
 
 
 #endif // Foundation_Version_INCLUDED
