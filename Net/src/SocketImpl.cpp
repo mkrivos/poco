@@ -934,7 +934,7 @@ void SocketImpl::initSocket(int af, int type, int proto)
 	if (_sockfd == POCO_INVALID_SOCKET)
 		error();
 
-#if defined(__MACH__) && defined(__APPLE__) || defined(__FreeBSD__) || defined(__linux__))
+#if defined(__MACH__) && defined(__APPLE__) || defined(__FreeBSD__)
 	// SIGPIPE sends a signal that if unhandled (which is the default)
 	// will crash the process. This only happens on UNIX, and not Linux.
 	//
