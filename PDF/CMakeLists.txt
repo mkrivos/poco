@@ -36,6 +36,7 @@ endif (POCO_UNBUNDLED)
 # with an unbundled version of hpdf
 # hpdf
 POCO_SOURCES( SRCS hpdf
+    src/bmpread.c
     src/hpdf_3dmeasure.c
     src/hpdf_annotation.c
     src/hpdf_array.c
@@ -59,8 +60,10 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_ext_gstate.c
     src/hpdf_font.c
     src/hpdf_font_cid.c
-    src/hpdf_fontdef_base14.c
+    src/hpdf_font_tt.c
+    src/hpdf_font_type1.c
     src/hpdf_fontdef.c
+    src/hpdf_fontdef_base14.c
     src/hpdf_fontdef_cid.c
     src/hpdf_fontdef_cns.c
     src/hpdf_fontdef_cnt.c
@@ -68,8 +71,6 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_fontdef_kr.c
     src/hpdf_fontdef_tt.c
     src/hpdf_fontdef_type1.c
-    src/hpdf_font_tt.c
-    src/hpdf_font_type1.c
     src/hpdf_gstate.c
     src/hpdf_image.c
     src/hpdf_image_ccitt.c
@@ -130,7 +131,7 @@ set_target_properties( "${LIBNAME}"
     DEFINE_SYMBOL PDF_EXPORTS
     )
 
-target_link_libraries( "${LIBNAME}" ${SYSLIBS} Foundation )
+target_link_libraries( "${LIBNAME}" ${SYSLIBS} XML Util Foundation )
 target_include_directories( "${LIBNAME}"
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
