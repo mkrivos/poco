@@ -41,16 +41,16 @@ if(MSVC)
         set(STATIC_POSTFIX "md" CACHE STRING "Set static library postfix" FORCE)
     endif(POCO_MT)
 
-    if (ENABLE_MSVC_MP)
+    if (POCO_ENABLE_MSVC_MP)
       add_definitions(/MP)
     endif()
 
 else(MSVC)
     # Other compilers then MSVC don't have a static STATIC_POSTFIX at the moment
     set(STATIC_POSTFIX "" CACHE STRING "Set static library postfix" FORCE)
-    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG}   -D_DEBUG")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 endif(MSVC)
+set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG}   -D_DEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 
 # Add a d postfix to the debug libraries
 if(POCO_STATIC)

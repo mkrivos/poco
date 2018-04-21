@@ -1,8 +1,3 @@
-[submodule "openssl"]
-	path = openssl
-	url = https://github.com/pocoproject/openssl.git
-	branch = develop
-
 [submodule "gradle"]
 	path = gradle
 	url = https://github.com/pocoproject/gradle.git
