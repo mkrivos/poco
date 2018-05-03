@@ -32,12 +32,11 @@
 namespace Poco {
 
 
-<<<<<<< HEAD
 template <class C>
-class AutoPtr
-	/// AutoPtr is a "smart" pointer for classes implementing
+class LegacyAutoPtr
+	/// LegacyAutoPtr is a "smart" pointer for classes implementing
 	/// reference counting based garbage collection.
-	/// To be usable with the AutoPtr template, a class must
+	/// To be usable with the LegacyAutoPtr template, a class must
 	/// implement the following behaviour:
 	/// A class must maintain a reference count.
 	/// The constructors of the object initialize the reference
@@ -51,58 +50,58 @@ class AutoPtr
 	/// if the reference count reaches zero, deletes the
 	/// object.
 	///
-	/// AutoPtr works in the following way:
-	/// If an AutoPtr is assigned an ordinary pointer to
+	/// LegacyAutoPtr works in the following way:
+	/// If an LegacyAutoPtr is assigned an ordinary pointer to
 	/// an object (via the constructor or the assignment operator),
 	/// it takes ownership of the object and the object's reference
 	/// count remains unchanged.
-	/// If the AutoPtr is assigned another AutoPtr, the
+	/// If the LegacyAutoPtr is assigned another LegacyAutoPtr, the
 	/// object's reference count is incremented by one by
 	/// calling duplicate() on its object.
-	/// The destructor of AutoPtr calls release() on its
+	/// The destructor of LegacyAutoPtr calls release() on its
 	/// object.
-	/// AutoPtr supports dereferencing with both the ->
+	/// LegacyAutoPtr supports dereferencing with both the ->
 	/// and the * operator. An attempt to dereference a null
-	/// AutoPtr results in a NullPointerException being thrown.
-	/// AutoPtr also implements all relational operators.
-	/// Note that AutoPtr allows casting of its encapsulated data types.
+	/// LegacyAutoPtr results in a NullPointerException being thrown.
+	/// LegacyAutoPtr also implements all relational operators.
+	/// Note that LegacyAutoPtr allows casting of its encapsulated data types.
 {
 public:
-	AutoPtr(): _ptr(0)
+	LegacyAutoPtr(): _ptr(0)
 	{
 	}
 
-	/*explicit*/ AutoPtr(C* ptr): _ptr(ptr)
+	/*explicit*/ LegacyAutoPtr(C* ptr): _ptr(ptr)
 	{
 	}
 
-	AutoPtr(C* ptr, bool shared): _ptr(ptr)
+	LegacyAutoPtr(C* ptr, bool shared): _ptr(ptr)
 	{
 		if (shared && _ptr) _ptr->duplicate();
 	}
 
-	AutoPtr(const AutoPtr& ptr): _ptr(ptr._ptr)
+	LegacyAutoPtr(const LegacyAutoPtr& ptr): _ptr(ptr._ptr)
 	{
 		if (_ptr) _ptr->duplicate();
 	}
 
-	AutoPtr(AutoPtr&& ptr) : _ptr(std::move(ptr._ptr))
+	LegacyAutoPtr(LegacyAutoPtr&& ptr) : _ptr(std::move(ptr._ptr))
 	{
 		ptr._ptr = nullptr;
 	}
 
 	template <class Other>
-	AutoPtr(const AutoPtr<Other>& ptr): _ptr(const_cast<Other*>(ptr.get()))
+	LegacyAutoPtr(const LegacyAutoPtr<Other>& ptr): _ptr(const_cast<Other*>(ptr.get()))
 	{
 		if (_ptr) _ptr->duplicate();
 	}
 
-	~AutoPtr()
+	~LegacyAutoPtr()
 	{
 		if (_ptr) _ptr->release();
 	}
 
-	AutoPtr& assign(C* ptr)
+	LegacyAutoPtr& assign(C* ptr)
 	{
 		if (_ptr != ptr)
 		{
@@ -112,7 +111,7 @@ public:
 		return *this;
 	}
 
-	AutoPtr& assign(C* ptr, bool shared)
+	LegacyAutoPtr& assign(C* ptr, bool shared)
 	{
 		if (_ptr != ptr)
 		{
@@ -123,7 +122,7 @@ public:
 		return *this;
 	}
 
-	AutoPtr& assign(const AutoPtr& ptr)
+	LegacyAutoPtr& assign(const LegacyAutoPtr& ptr)
 	{
 		if (&ptr != this)
 		{
@@ -135,7 +134,7 @@ public:
 	}
 
 	template <class Other>
-	AutoPtr& assign(const AutoPtr<Other>& ptr)
+	LegacyAutoPtr& assign(const LegacyAutoPtr<Other>& ptr)
 	{
 		if (ptr.get() != _ptr)
 		{
@@ -165,34 +164,34 @@ public:
 		assign(ptr, shared);
 	}
 
-	void reset(const AutoPtr& ptr)
+	void reset(const LegacyAutoPtr& ptr)
 	{
 		assign(ptr);
 	}
 
 	template <class Other>
-	void reset(const AutoPtr<Other>& ptr)
+	void reset(const LegacyAutoPtr<Other>& ptr)
 	{
 		assign<Other>(ptr);
 	}
 
-	AutoPtr& operator = (C* ptr)
+	LegacyAutoPtr& operator = (C* ptr)
 	{
 		return assign(ptr);
 	}
 
-	AutoPtr& operator = (const AutoPtr& ptr)
+	LegacyAutoPtr& operator = (const LegacyAutoPtr& ptr)
 	{
 		return assign(ptr);
 	}
 
 	template <class Other>
-	AutoPtr& operator = (const AutoPtr<Other>& ptr)
+	LegacyAutoPtr& operator = (const LegacyAutoPtr<Other>& ptr)
 	{
 		return assign<Other>(ptr);
 	}
 
-	AutoPtr& operator = (AutoPtr&& ptr)
+	LegacyAutoPtr& operator = (LegacyAutoPtr&& ptr)
 	{
 		if (&ptr == this) return *this;
 		if (_ptr) _ptr->release();
@@ -201,34 +200,34 @@ public:
 		return *this;
 	}
 
-	void swap(AutoPtr& ptr)
+	void swap(LegacyAutoPtr& ptr)
 	{
 		std::swap(_ptr, ptr._ptr);
 	}
 
 	template <class Other>
-	AutoPtr<Other> cast() const
-		/// Casts the AutoPtr via a dynamic cast to the given type.
-		/// Returns an AutoPtr containing NULL if the cast fails.
+	LegacyAutoPtr<Other> cast() const
+		/// Casts the LegacyAutoPtr via a dynamic cast to the given type.
+		/// Returns an LegacyAutoPtr containing NULL if the cast fails.
 		/// Example: (assume class Sub: public Super)
-		///    AutoPtr<Super> super(new Sub());
-		///    AutoPtr<Sub> sub = super.cast<Sub>();
+		///    LegacyAutoPtr<Super> super(new Sub());
+		///    LegacyAutoPtr<Sub> sub = super.cast<Sub>();
 		///    poco_assert (sub.get());
 	{
 		Other* pOther = dynamic_cast<Other*>(_ptr);
-		return AutoPtr<Other>(pOther, true);
+		return LegacyAutoPtr<Other>(pOther, true);
 	}
 
 	template <class Other>
-	AutoPtr<Other> unsafeCast() const
-		/// Casts the AutoPtr via a static cast to the given type.
+	LegacyAutoPtr<Other> unsafeCast() const
+		/// Casts the LegacyAutoPtr via a static cast to the given type.
 		/// Example: (assume class Sub: public Super)
-		///    AutoPtr<Super> super(new Sub());
-		///    AutoPtr<Sub> sub = super.unsafeCast<Sub>();
+		///    LegacyAutoPtr<Super> super(new Sub());
+		///    LegacyAutoPtr<Sub> sub = super.unsafeCast<Sub>();
 		///    poco_assert (sub.get());
 	{
 		Other* pOther = static_cast<Other*>(_ptr);
-		return AutoPtr<Other>(pOther, true);
+		return LegacyAutoPtr<Other>(pOther, true);
 	}
 
 	inline C* operator -> ()
@@ -315,7 +314,7 @@ public:
 		return _ptr;
 	}
 
-	inline bool operator == (const AutoPtr& ptr) const
+	inline bool operator == (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr == ptr._ptr;
 	}
@@ -330,7 +329,7 @@ public:
 		return _ptr == ptr;
 	}
 
-	inline bool operator != (const AutoPtr& ptr) const
+	inline bool operator != (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr != ptr._ptr;
 	}
@@ -345,7 +344,7 @@ public:
 		return _ptr != ptr;
 	}
 
-	inline bool operator < (const AutoPtr& ptr) const
+	inline bool operator < (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr < ptr._ptr;
 	}
@@ -360,7 +359,7 @@ public:
 		return _ptr < ptr;
 	}
 
-	inline bool operator <= (const AutoPtr& ptr) const
+	inline bool operator <= (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr <= ptr._ptr;
 	}
@@ -375,7 +374,7 @@ public:
 		return _ptr <= ptr;
 	}
 
-	inline bool operator > (const AutoPtr& ptr) const
+	inline bool operator > (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr > ptr._ptr;
 	}
@@ -390,7 +389,7 @@ public:
 		return _ptr > ptr;
 	}
 
-	inline bool operator >= (const AutoPtr& ptr) const
+	inline bool operator >= (const LegacyAutoPtr& ptr) const
 	{
 		return _ptr >= ptr._ptr;
 	}
@@ -415,10 +414,10 @@ inline void swap(AutoPtr<C>& p1, AutoPtr<C>& p2)
 {
 	p1.swap(p2);
 }
-=======
+
+
 template<class T>
 using AutoPtr = RefPtr<T>;
->>>>>>> warningless
 
 
 } // namespace Poco
