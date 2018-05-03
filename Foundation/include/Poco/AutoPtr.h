@@ -410,7 +410,7 @@ private:
 
 
 template <class C>
-inline void swap(AutoPtr<C>& p1, AutoPtr<C>& p2)
+inline void swap(LegacyAutoPtr<C>& p1, LegacyAutoPtr<C>& p2)
 {
 	p1.swap(p2);
 }
