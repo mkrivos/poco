@@ -41,11 +41,7 @@
 //
 // Monotonically incremented for any API change/addition
 //
-<<<<<<< HEAD
-#define POCO_API_VERSION    20180310
-=======
-#define POCO_API_VERSION    20180503
->>>>>>> refs/remotes/origin/rsys2
+#define POCO_API_VERSION    20180501
 
 
 #endif // Foundation_Version_INCLUDED
