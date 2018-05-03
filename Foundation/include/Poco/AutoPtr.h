@@ -18,9 +18,7 @@
 #define Foundation_AutoPtr_INCLUDED
 
 
-#include "Poco/Foundation.h"
-#include "Poco/Exception.h"
-#include <algorithm>
+#include "Poco/RefPtr.h"
 
 
 #ifndef POCO_PTR_CHECKING
@@ -34,6 +32,7 @@
 namespace Poco {
 
 
+<<<<<<< HEAD
 template <class C>
 class AutoPtr
 	/// AutoPtr is a "smart" pointer for classes implementing
@@ -416,6 +415,10 @@ inline void swap(AutoPtr<C>& p1, AutoPtr<C>& p2)
 {
 	p1.swap(p2);
 }
+=======
+template<class T>
+using AutoPtr = RefPtr<T>;
+>>>>>>> warningless
 
 
 } // namespace Poco
