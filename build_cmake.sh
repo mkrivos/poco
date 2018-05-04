@@ -14,7 +14,7 @@ make install
 
 rm -rf CMakeCache.txt
 
-cmake ../. -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=1 $1 $2 $3 $4 $5 $6
+cmake ../. -DCMAKE_BUILD_TYPE=Release -DPOCO_ENABLE_TESTS=1 $1 $2 $3 $4 $5 $6
 make -j`nproc`
 make install
 
