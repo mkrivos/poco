@@ -11,6 +11,7 @@ find_path(MYSQL_INCLUDE_DIR mysql.h
 		$ENV{MYSQL_INCLUDE_DIR}
 		$ENV{MYSQL_DIR}/include
 		$ENV{ProgramFiles}/MySQL/*/include
+		c:/ProgramFiles/MySQL/MySQL Connector*/include
 		${BINDIR32}/MySQL/include
         ${BINDIR32}/MySQL/*/include
         $ENV{SystemDrive}/MySQL/*/include)
@@ -37,7 +38,7 @@ if (WIN32)
 		add_definitions(-DDBUG_OFF)
 	endif (CMAKE_BUILD_TYPE STREQUAL Debug)
 
-	find_library(MYSQL_LIB NAMES mysqlclient.lib
+	find_library(MYSQL_LIB NAMES mysqlclient.lib libmysql.lib
 				 PATHS
 				 $ENV{MYSQL_DIR}/lib/${libsuffixDist}
 				 $ENV{MYSQL_DIR}/libmysql/${libsuffixBuild}
@@ -48,6 +49,7 @@ if (WIN32)
 				 ${BINDIR32}/MySQL/*/lib/vs12
 				 ${BINDIR32}/MySQL/*/lib/vs11
 				 ${BINDIR32}/MySQL/*/lib/vs10
+				 C:/Program Files/MySQL/MySQL Connector C 6.1/lib/
 				 $ENV{SystemDrive}/MySQL/*/lib/${libsuffixDist})
 else (WIN32)
 	find_library(MYSQL_LIB NAMES mysqlclient mysqlclient_r
