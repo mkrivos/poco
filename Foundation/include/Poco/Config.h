@@ -219,7 +219,7 @@
 
 // Macro enabling POCO Exceptions and assertions
 // to append stack backtrace (if available)
-#define POCO_EXCEPTION_BACKTRACE
+//#define POCO_EXCEPTION_BACKTRACE
 
 
 #endif // Foundation_Config_INCLUDED
