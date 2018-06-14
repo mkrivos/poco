@@ -397,40 +397,22 @@ protected:
 	}
 
 private:
+
+#ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4127 )
 #pragma warning( disable : 4018 )
-	template <typename F, typename T>
-	void POCO_UNUSED checkUpperLimit(const F& from) const
-	{
-		// casting to type of smaller size AND
-		// 'from' is greater than 'T' max value
-		if ((sizeof(T) < sizeof(F)) &&
-			(from > static_cast<F>(std::numeric_limits<T>::max())))
+#endif
+
+		template <typename F, typename T>
+		void POCO_UNUSED checkUpperLimit(const F& from) const
 		{
 			throw RangeException("Value too large.");
 		}
-		// casting to type of equal/bigger size AND
-		// 'F' is signed AND
-		// 'T' is unsigned AND
-		// 'from' is negative
-		else if (std::numeric_limits<F>::is_signed &&
-				!std::numeric_limits<T>::is_signed && from < 0)
-		{
-			throw RangeException("Value too small.");
-		}
-		// casting to type of equal/bigger size AND
-		// 'F' is unsigned AND
-		// 'T' is signed AND
-		// 'from' is greater than 'T' max value
-		else if (!std::numeric_limits<F>::is_signed &&
-					std::numeric_limits<T>::is_signed &&
-					static_cast<Poco::UInt64>(from) > std::numeric_limits<T>::max())
-		{
-			throw RangeException("Value too large.");
-		}
-	}
+
+#ifdef _MSC_VER
 #pragma warning( pop )
+#endif
 
 	template <typename F, typename T>
 	void checkUpperLimitFloat(const F& from) const

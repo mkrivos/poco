@@ -136,7 +136,7 @@ cmake-build/
 
 # Clion generated files #
 ######################
-cmake-build-debug
+cmake-build-*
 .idea/
 
 # Temporary files #
@@ -180,3 +180,9 @@ openssl/packages/
 !openssl/win64/lib/release/*.lib
 
 /Debug
+=======
+
+# Development files #
+#####################
+postgresql/
+mysql/
