@@ -1,3 +1,11 @@
+#find_library(QWT_LIBRARY_RELEASE NAMES ${qwtLibNames} PATHS /usr/lib64 /usr/lib /usr/local/lib)
+
+#find_library(QWT_LIBRARY_DEBUG NAMES ${qwtLibNamesd} PATHS /usr/lib64 /usr/lib /usr/local/lib)
+
+#set(QWT_LIBRARY debug ${QWT_LIBRARY_DEBUG} optimized ${QWT_LIBRARY_RELEASE})
+
+#select_library_configurations(QWT)
+
 #
 # $Id$
 #
@@ -16,8 +24,10 @@ ENDIF (PCRE_INCLUDE_DIRS)
 
 FIND_PATH(PCRE_INCLUDE_DIR pcre.h)
 
-SET(PCRE_NAMES pcre)
-FIND_LIBRARY(PCRE_LIBRARY NAMES ${PCRE_NAMES} )
+FIND_LIBRARY(PCRE_LIBRARY_DEBUG NAMES pcred PATH_SUFFIXES lib)
+FIND_LIBRARY(PCRE_LIBRARY_RELEASE NAMES pcre PATH_SUFFIXES lib)
+include(${CMAKE_CURRENT_LIST_DIR}/SelectLibraryConfigurations.cmake)
+select_library_configurations(PCRE)
 
 # handle the QUIETLY and REQUIRED arguments and set PCRE_FOUND to TRUE if
 # all listed variables are TRUE

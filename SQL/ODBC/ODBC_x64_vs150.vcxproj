@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="debug_shared|x64">
@@ -31,8 +31,9 @@
     <ProjectGuid>{1B29820D-375F-11DB-837B-00123FC423B5}</ProjectGuid>
     <RootNamespace>ODBC</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
@@ -63,27 +64,27 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
-  <ImportGroup Label="ExtensionSettings"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='release_shared|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'" Label="PropertySheets">
-    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">PocoSQLODBC64d</TargetName>
@@ -132,8 +133,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
-      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader />
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
     </ClCompile>
@@ -164,9 +165,9 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat/>
+      <DebugInformationFormat />
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
@@ -195,7 +196,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <ProgramDataBaseFileName>..\..\lib64\PocoSQLODBCmtd.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -220,9 +221,9 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat/>
+      <DebugInformationFormat />
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
@@ -242,7 +243,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <ProgramDataBaseFileName>..\..\lib64\PocoSQLODBCmdd.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -267,9 +268,9 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat/>
+      <DebugInformationFormat />
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
@@ -277,41 +278,41 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Poco\SQL\ODBC\Binder.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\ConnectionHandle.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Connector.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Diagnostics.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\EnvironmentHandle.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Error.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Extractor.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Handle.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\ODBC.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\ODBCException.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\ODBCMetaColumn.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\ODBCStatementImpl.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Parameter.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Preparator.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\SessionImpl.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\TypeInfo.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Unicode.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Unicode_UNIXODBC.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Unicode_WIN32.h"/>
-    <ClInclude Include="include\Poco\SQL\ODBC\Utility.h"/>
+    <ClInclude Include="include\Poco\SQL\ODBC\Binder.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\ConnectionHandle.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Connector.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Diagnostics.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\EnvironmentHandle.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Error.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Extractor.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Handle.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\ODBC.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\ODBCException.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\ODBCMetaColumn.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\ODBCStatementImpl.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Parameter.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Preparator.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\SessionImpl.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\TypeInfo.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Unicode.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Unicode_UNIXODBC.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Unicode_WIN32.h" />
+    <ClInclude Include="include\Poco\SQL\ODBC\Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Binder.cpp"/>
-    <ClCompile Include="src\ConnectionHandle.cpp"/>
-    <ClCompile Include="src\Connector.cpp"/>
-    <ClCompile Include="src\EnvironmentHandle.cpp"/>
-    <ClCompile Include="src\Extractor.cpp"/>
-    <ClCompile Include="src\ODBCException.cpp"/>
-    <ClCompile Include="src\ODBCMetaColumn.cpp"/>
-    <ClCompile Include="src\ODBCStatementImpl.cpp"/>
-    <ClCompile Include="src\Parameter.cpp"/>
-    <ClCompile Include="src\Preparator.cpp"/>
-    <ClCompile Include="src\SessionImpl.cpp"/>
-    <ClCompile Include="src\TypeInfo.cpp"/>
-    <ClCompile Include="src\Unicode.cpp"/>
+    <ClCompile Include="src\Binder.cpp" />
+    <ClCompile Include="src\ConnectionHandle.cpp" />
+    <ClCompile Include="src\Connector.cpp" />
+    <ClCompile Include="src\EnvironmentHandle.cpp" />
+    <ClCompile Include="src\Extractor.cpp" />
+    <ClCompile Include="src\ODBCException.cpp" />
+    <ClCompile Include="src\ODBCMetaColumn.cpp" />
+    <ClCompile Include="src\ODBCStatementImpl.cpp" />
+    <ClCompile Include="src\Parameter.cpp" />
+    <ClCompile Include="src\Preparator.cpp" />
+    <ClCompile Include="src\SessionImpl.cpp" />
+    <ClCompile Include="src\TypeInfo.cpp" />
+    <ClCompile Include="src\Unicode.cpp" />
     <ClCompile Include="src\Unicode_UNIXODBC.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">true</ExcludedFromBuild>
@@ -328,8 +329,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\Utility.cpp"/>
+    <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
-  <ImportGroup Label="ExtensionTargets"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

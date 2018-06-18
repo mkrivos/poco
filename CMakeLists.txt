@@ -213,7 +213,7 @@ if(MSVC)
       "Set to OFF|ON (default is OFF) to control build of POCO as /MT instead of /MD" OFF)
 
     option(POCO_ENABLE_MSVC_MP
-      "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" OFF)
+      "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" ON)
 endif()
 
 if(BUILD_SHARED_LIBS)
@@ -471,7 +471,7 @@ endif()
 IF (REMOTING)
     add_subdirectory(CodeGeneration)
     add_subdirectory(XSD)
-    add_subdirectory(RemotingNG)
+    #add_subdirectory(RemotingNG)
 ENDIF (REMOTING)
 
 if(EXISTS ${PROJECT_SOURCE_DIR}/Encodings/Compiler AND POCO_ENABLE_ENCODINGS_COMPILER)
