@@ -45,11 +45,11 @@ if (DISABLE_CPP14)
 else()
   # C++14 compiler flags
   include(CXX1x)
-  check_for_cxx14_compiler(CXX14_COMPILER)
+  check_for_cxx17_compiler(CXX14_COMPILER)
 
   # If a C++14 compiler is available, then set the appropriate flags
   if(CXX14_COMPILER)
-    enable_cxx14()
+    enable_cxx17()
   endif()
 endif()
 

@@ -73,11 +73,11 @@ public:
 	typedef std::vector<TypeInfoTup> TypeInfoVec;
 	typedef const std::type_info* TypeInfoPtr;
 
-	struct TypeInfoComp : public std::binary_function<TypeInfoPtr, TypeInfoPtr, bool>
-	{	
+	struct TypeInfoComp
+	{
 		bool operator()(const TypeInfoPtr& left, const TypeInfoPtr& right) const
 		{	// apply operator< to operands
-			return ( left->before( *right ) );
+			return (left->before(*right));
 		}
 	};
 
