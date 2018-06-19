@@ -34,7 +34,7 @@ class Foundation_API TraverseBase
 {
 public:
 	typedef std::stack<DirectoryIterator> Stack;
-	typedef std::pointer_to_unary_function<const Stack&, UInt16> DepthFunPtr;
+	typedef UInt16 (*DepthFunction)(const Stack&);
 
 	enum
 	{
@@ -43,13 +43,13 @@ public:
 
 	Poco::BasicEvent<const std::string> traverseError;
 
-	TraverseBase(DepthFunPtr depthDeterminer, UInt16 maxDepth = D_INFINITE);
+	TraverseBase(DepthFunction depthDeterminer, UInt16 maxDepth = D_INFINITE);
 
 protected:
 	bool isFiniteDepth();
 	bool isDirectory(Poco::File& file);
 
-	DepthFunPtr _depthDeterminer;
+	DepthFunction _depthDeterminer;
 	UInt16 _maxDepth;
 	DirectoryIterator _itEnd;
 
@@ -63,7 +63,7 @@ private:
 class Foundation_API ChildrenFirstTraverse: public TraverseBase
 {
 public:
-	ChildrenFirstTraverse(DepthFunPtr depthDeterminer, UInt16 maxDepth = D_INFINITE);
+	ChildrenFirstTraverse(DepthFunction depthDeterminer, UInt16 maxDepth = D_INFINITE);
 
 	const std::string next(Stack* itStack, bool* isFinished);
 
@@ -77,7 +77,7 @@ private:
 class Foundation_API SiblingsFirstTraverse: public TraverseBase
 {
 public:
-	SiblingsFirstTraverse(DepthFunPtr depthDeterminer, UInt16 maxDepth = D_INFINITE);
+	SiblingsFirstTraverse(DepthFunction depthDeterminer, UInt16 maxDepth = D_INFINITE);
 
 	const std::string next(Stack* itStack, bool* isFinished);
 

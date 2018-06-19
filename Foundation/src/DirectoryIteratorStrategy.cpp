@@ -21,7 +21,8 @@ namespace Poco {
 //
 // TraverseBase
 //
-TraverseBase::TraverseBase(DepthFunPtr depthDeterminer, UInt16 maxDepth): _depthDeterminer(depthDeterminer), 
+TraverseBase::TraverseBase(DepthFunction depthDeterminer, UInt16 maxDepth):
+	_depthDeterminer(depthDeterminer),
 	_maxDepth(maxDepth)
 {
 }
@@ -49,7 +50,7 @@ bool TraverseBase::isDirectory(Poco::File& file)
 //
 // ChildrenFirstTraverse
 //
-ChildrenFirstTraverse::ChildrenFirstTraverse(DepthFunPtr depthDeterminer, UInt16 maxDepth):
+ChildrenFirstTraverse::ChildrenFirstTraverse(DepthFunction depthDeterminer, UInt16 maxDepth):
 	TraverseBase(depthDeterminer, maxDepth)
 {
 }
@@ -110,7 +111,7 @@ const std::string ChildrenFirstTraverse::next(Stack* itStack, bool* isFinished)
 //
 // SiblingsFirstTraverse
 //
-SiblingsFirstTraverse::SiblingsFirstTraverse(DepthFunPtr depthDeterminer, UInt16 maxDepth)
+SiblingsFirstTraverse::SiblingsFirstTraverse(DepthFunction depthDeterminer, UInt16 maxDepth)
 	: TraverseBase(depthDeterminer, maxDepth)
 {
 	_dirsStack.push(std::queue<std::string>());
