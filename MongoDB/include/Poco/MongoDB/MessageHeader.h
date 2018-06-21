@@ -72,10 +72,10 @@ public:
 	Int32 responseTo() const;
 		/// Returns the request id from the original request.
 
-private:
 	void setMessageLength(Int32 length);
-		/// Sets the message length.
+	/// Sets the message length.
 
+private:
 	Int32 _messageLength;
 	Int32 _requestID;
 	Int32 _responseTo;
