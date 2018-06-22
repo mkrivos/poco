@@ -6,10 +6,13 @@ POCO_SOURCES_AUTO( SRCS ${SRCS_G})
 file(GLOB_RECURSE HDRS_G "include/*.h" )
 POCO_HEADERS_AUTO( SRCS ${HDRS_G})
 
+set(POCO_UNBUNDLED_PDF ON)
+
 # If POCO_UNBUNDLED is enabled we try to find the required packages
 # The configuration will fail if the packages are not found
-if (POCO_UNBUNDLED)
+if (POCO_UNBUNDLED_PDF)
     find_package(ZLIB REQUIRED)
+	find_package(PNG REQUIRED)
 else()
     # zlib
     POCO_SOURCES( SRCS zlib
@@ -25,7 +28,31 @@ else()
         src/trees.c
         src/zutil.c
     )
-endif (POCO_UNBUNDLED)
+
+# TODO: Currently only bundled is supported, in future this should also be possible
+# with an unbundled version of libpng
+POCO_SOURCES( SRCS libpng
+    src/png.c
+    src/pngerror.c
+    src/pnggccrd.c
+    src/pngget.c
+    src/pngmem.c
+    src/pngpread.c
+    src/pngread.c
+    src/pngrio.c
+    src/pngrtran.c
+    src/pngrutil.c
+    src/pngset.c
+    src/pngtest.c
+    src/pngtrans.c
+    src/pngvcrd.c
+    src/pngwio.c
+    src/pngwrite.c
+    src/pngwtran.c
+    src/pngwutil.c
+)
+
+endif ()
 
 # TODO: Currently only bundled is supported, in future this should also be possible
 # with an unbundled version of hpdf
@@ -91,29 +118,6 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_xref.c
 )
 
-# TODO: Currently only bundled is supported, in future this should also be possible
-# with an unbundled version of libpng
-POCO_SOURCES( SRCS libpng
-    src/png.c
-    src/pngerror.c
-    src/pnggccrd.c
-    src/pngget.c
-    src/pngmem.c
-    src/pngpread.c
-    src/pngread.c
-    src/pngrio.c
-    src/pngrtran.c
-    src/pngrutil.c
-    src/pngset.c
-    src/pngtest.c
-    src/pngtrans.c
-    src/pngvcrd.c
-    src/pngwio.c
-    src/pngwrite.c
-    src/pngwtran.c
-    src/pngwutil.c
-)
-
 #TODO: Can we put this with the below includes? PRIVAT eg.
 include_directories( "include/Poco/PDF" ) # zip src
 
@@ -126,7 +130,7 @@ set_target_properties(PDF
     DEFINE_SYMBOL PDF_EXPORTS
     )
 
-target_link_libraries(PDF PUBLIC ${ZLIB_LIBRARIES} Poco::XML Poco::Util)
+target_link_libraries(PDF PUBLIC ${ZLIB_LIBRARIES} Poco::XML Poco::Util ${PNG_LIBRARY})
 target_include_directories(PDF
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
