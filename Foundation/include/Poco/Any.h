@@ -33,7 +33,7 @@ namespace Dynamic {
 
 class Var;
 class VarHolder;
-template <class> class VarHolderImpl;
+template <class, class Enable = void> class VarHolderImpl;
 
 }
 
@@ -131,12 +131,12 @@ public:
 private:
 #endif
 	
-	PlaceholderT*         pHolder;
+	PlaceholderT* pHolder;
 
 	friend class Any;
 	friend class Dynamic::Var;
 	friend class Dynamic::VarHolder;
-	template <class> friend class Dynamic::VarHolderImpl;
+	template <class, class Enable> friend class Dynamic::VarHolderImpl;
 };
 
 
