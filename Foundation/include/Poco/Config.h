@@ -26,8 +26,9 @@
 #endif
 
 // Define to enable C++14 support
+#ifndef POCO_ENABLE_CPP14
 #define POCO_ENABLE_CPP14
-
+#endif
 // Compatibility
 // Vyriesit ako a ci toto povolit vo WIN, linux to nezere vobec
 //#define POCO_WIN32_UTF8

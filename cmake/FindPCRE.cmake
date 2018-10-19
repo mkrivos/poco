@@ -7,8 +7,6 @@
 #select_library_configurations(QWT)
 
 #
-# $Id$
-#
 # - Find pcre
 # Find the native PCRE includes and library
 #
