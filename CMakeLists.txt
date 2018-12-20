@@ -97,7 +97,7 @@ endif()
 
 if(MYSQL_FOUND)
   option(POCO_ENABLE_SQL "Enable SQL" ON)
-  option(POCO_ENABLE_SQL_MYSQL "Enable SQL MySQL" OFF)
+  option(POCO_ENABLE_SQL_MYSQL "Enable SQL MySQL" ON)
 else()
   option(POCO_ENABLE_SQL "Enable SQL" OFF)
   option(POCO_ENABLE_SQL_MYSQL "Enable SQL MySQL" OFF)
