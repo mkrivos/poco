@@ -186,3 +186,4 @@ openssl/packages/
 #####################
 postgresql/
 mysql/
+/.metadata/
