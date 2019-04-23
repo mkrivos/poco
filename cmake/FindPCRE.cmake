@@ -1,43 +1,107 @@
-#find_library(QWT_LIBRARY_RELEASE NAMES ${qwtLibNames} PATHS /usr/lib64 /usr/lib /usr/local/lib)
+# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file Copyright.txt or https://cmake.org/licensing for details.
 
-#find_library(QWT_LIBRARY_DEBUG NAMES ${qwtLibNamesd} PATHS /usr/lib64 /usr/lib /usr/local/lib)
+#[=======================================================================[.rst:
+FindPCRE
+-------
 
-#set(QWT_LIBRARY debug ${QWT_LIBRARY_DEBUG} optimized ${QWT_LIBRARY_RELEASE})
+Finds the PCRE library.
 
-#select_library_configurations(QWT)
+Imported Targets
+^^^^^^^^^^^^^^^^
 
-#
-# - Find pcre
-# Find the native PCRE includes and library
-#
-#  PCRE_INCLUDE_DIRS - where to find pcre.h, etc.
-#  PCRE_LIBRARIES    - List of libraries when using pcre.
-#  PCRE_FOUND        - True if pcre found.
+This module provides the following imported targets, if found:
 
+``Pcre::Pcre``
+  The PCRE library
 
-IF (PCRE_INCLUDE_DIRS)
-  # Already in cache, be silent
-  SET(PCRE_FIND_QUIETLY TRUE)
-ENDIF (PCRE_INCLUDE_DIRS)
+Result Variables
+^^^^^^^^^^^^^^^^
 
-FIND_PATH(PCRE_INCLUDE_DIR pcre.h)
+This will define the following variables:
 
-FIND_LIBRARY(PCRE_LIBRARY_DEBUG NAMES pcred PATH_SUFFIXES lib)
-FIND_LIBRARY(PCRE_LIBRARY_RELEASE NAMES pcre PATH_SUFFIXES lib)
-include(${CMAKE_CURRENT_LIST_DIR}/SelectLibraryConfigurations.cmake)
-select_library_configurations(PCRE)
+``PCRE_FOUND``
+  True if the system has the PCRE library.
+``PCRE_VERSION``
+  The version of the PCRE library which was found.
+``PCRE_INCLUDE_DIRS``
+  Include directories needed to use PCRE.
+``PCRE_LIBRARIES``
+  Libraries needed to link to PCRE.
 
-# handle the QUIETLY and REQUIRED arguments and set PCRE_FOUND to TRUE if
-# all listed variables are TRUE
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(PCRE DEFAULT_MSG PCRE_LIBRARY PCRE_INCLUDE_DIR)
+Cache Variables
+^^^^^^^^^^^^^^^
 
-IF(PCRE_FOUND)
-  SET( PCRE_LIBRARIES ${PCRE_LIBRARY} )
-  SET( PCRE_INCLUDE_DIRS ${PCRE_INCLUDE_DIR} )
-ELSE(PCRE_FOUND)
-  SET( PCRE_LIBRARIES )
-  SET( PCRE_INCLUDE_DIRS )
-ENDIF(PCRE_FOUND)
+The following cache variables may also be set:
 
-MARK_AS_ADVANCED( PCRE_LIBRARIES PCRE_INCLUDE_DIRS )
+``PCRE_INCLUDE_DIR``
+  The directory containing ``foo.h``.
+``PCRE_LIBRARY``
+  The path to the PCRE library.
+
+Hints
+^^^^^
+
+``PCRE_ROOT_DIR``
+  The path to the root directory of a PCRE installation.
+``PCRE_ROOT_INCLUDE_DIRS``
+  The path to the include directory of a PCRE installation.
+``PCRE_ROOT_LIBRARY_DIRS``
+  The path to the library directory of a PCRE installation.
+
+#]=======================================================================]#
+
+include(FindPackageHandleStandardArgs)
+
+find_package(PkgConfig QUIET)
+pkg_check_modules(PC_PCRE QUIET pcre)
+
+find_path(PCRE_INCLUDE_DIR
+  NAMES pcre.h
+  HINTS
+        ${PCRE_ROOT_DIR}/include
+        ${PCRE_ROOT_INCLUDE_DIRS}
+  PATHS 
+        ${PC_PCRE_INCLUDE_DIRS}
+  DOC "Specify the include directory containing pcre.h"
+)
+
+find_library(PCRE_LIBRARY
+  NAMES pcre
+  HINTS
+        ${PCRE_ROOT_DIR}/lib
+        ${PCRE_ROOT_LIBRARY_DIRS}
+  PATHS
+        ${PC_PCRE_LIBRARY_DIRS}
+  DOC "Specify the lib directory containing pcre"
+)
+
+set(PCRE_VERSION ${PC_PCRE_VERSION})
+
+find_package_handle_standard_args(PCRE
+  FOUND_VAR PCRE_FOUND
+  REQUIRED_VARS
+    PCRE_LIBRARY
+    PCRE_INCLUDE_DIR
+  VERSION_VAR PCRE_VERSION
+)
+
+if(PCRE_FOUND)
+  set(PCRE_LIBRARIES ${PCRE_LIBRARY})
+  set(PCRE_INCLUDE_DIRS ${PCRE_INCLUDE_DIR})
+  set(PCRE_DEFINITIONS ${PC_PCRE_CFLAGS_OTHER})
+endif()
+
+if(PCRE_FOUND AND NOT TARGET Pcre::Pcre)
+  add_library(Pcre::Pcre UNKNOWN IMPORTED)
+  set_target_properties(Pcre::Pcre PROPERTIES
+    IMPORTED_LOCATION "${PCRE_LIBRARY}"
+    INTERFACE_COMPILE_OPTIONS "${PC_PCRE_CFLAGS_OTHER}"
+    INTERFACE_INCLUDE_DIRECTORIES "${PCRE_INCLUDE_DIR}"
+  )
+endif()
+
+mark_as_advanced(
+  PCRE_INCLUDE_DIR
+  PCRE_LIBRARY
+)
