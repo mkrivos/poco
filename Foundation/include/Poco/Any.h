@@ -566,14 +566,18 @@ const ValueType& RefAnyCast(const Any & operand)
 	/// const MyType& tmp = RefAnyCast<MyType>(anAny);
 {
 	ValueType* result = AnyCast<ValueType>(const_cast<Any*>(&operand));
-	std::string s = "RefAnyCast: Failed to convert between Any types ";
-	if (operand._pHolder)
+	if (!result)
 	{
-		s.append(1, '(');
-		s.append(operand._pHolder->type().name());
-		s.append(" => ");
-		s.append(typeid(ValueType).name());
-		s.append(1, ')');
+		std::string s = "RefAnyCast: Failed to convert between const Any types ";
+		if (operand._pHolder)
+		{
+			s.append(1, '(');
+			s.append(operand._pHolder->type().name());
+			s.append(" => ");
+			s.append(typeid(ValueType).name());
+			s.append(1, ')');
+		}
+		throw BadCastException(s);
 	}
 	return *result;
 }
