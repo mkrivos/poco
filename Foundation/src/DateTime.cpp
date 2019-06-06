@@ -60,8 +60,7 @@ DateTime::DateTime(const tm& tmStruct):
 														  "0 <= millisecond <= 999\n"
 														  "0 <= microsecond <= 999",
 														  _year, _month, _day, _hour, _minute,
-														  _second, _millisecond, _microsecond,
-														  daysOfMonth(_year, _month)));
+														  _second, _millisecond, _microsecond));
 	}
 }
 
@@ -103,8 +102,7 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute, int secon
 			"0 <= millisecond <= 999\n"
 			"0 <= microsecond <= 999",
 			_year, _month, _day, _hour, _minute,
-			_second, _millisecond, _microsecond,
-			daysOfMonth(_year, _month)));
+			_second, _millisecond, _microsecond));
 	}
 }
 
