@@ -118,6 +118,35 @@ POCO_SOURCES( SRCS hpdf
     src/hpdf_xref.c
 )
 
+# TODO: Currently only bundled is supported, in future this should also be possible
+# with an unbundled version of libpng
+POCO_SOURCES( SRCS libpng
+    src/png.c
+    src/pngerror.c
+    src/pnggccrd.c
+    src/pngget.c
+    src/pngmem.c
+    src/pngpread.c
+    src/pngread.c
+    src/pngrio.c
+    src/pngrtran.c
+    src/pngrutil.c
+    src/pngset.c
+    src/pngtest.c
+    src/pngtrans.c
+    src/pngvcrd.c
+    src/pngwio.c
+    src/pngwrite.c
+    src/pngwtran.c
+    src/pngwutil.c
+)
+
+# Version Resource
+if(MSVC AND NOT POCO_STATIC)
+    source_group("Resources" FILES ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+    list(APPEND SRCS ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+endif()
+
 #TODO: Can we put this with the below includes? PRIVAT eg.
 include_directories( "include/Poco/PDF" ) # zip src
 

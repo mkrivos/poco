@@ -19,6 +19,12 @@ else()
     )
 endif()
 
+# Version Resource
+if(MSVC AND NOT POCO_STATIC)
+    source_group("Resources" FILES ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+    list(APPEND SQLITE_SRCS ${CMAKE_SOURCE_DIR}/DLLVersion.rc)
+endif()
+
 add_library(SQLSQLite ${SQLITE_SRCS} )
 add_library(Poco::SQLSQLite ALIAS SQLSQLite)
 set_target_properties(SQLSQLite
@@ -45,6 +51,7 @@ else()
 	endif(WINCE)
 	target_compile_definitions(SQLSQLite PRIVATE 
 	    SQLITE_THREADSAFE=1 
+	    SQLITE_DISABLE_LFS
 	    SQLITE_ENABLE_FTS3
 		SQLITE_ENABLE_FTS3_PARENTHESIS
 		SQLITE_ENABLE_RTREE
