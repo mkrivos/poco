@@ -48,15 +48,28 @@ void HTTPStreamBuf::close()
 }
 
 
+size_t HTTPStreamBuf::getReaded() const
+{
+	return _readedBytes;
+}
+
+
+size_t HTTPStreamBuf::getWritten() const
+{
+	return _writtenBytes;
+}
+
+
 int HTTPStreamBuf::readFromDevice(char* buffer, std::streamsize length)
 {
+	_readedBytes += length;
 	return _session.read(buffer, length);
 }
 
 
 int HTTPStreamBuf::writeToDevice(const char* buffer, std::streamsize length)
 {
-
+	_writtenBytes += length;
 	return _session.write(buffer, length);
 }
 

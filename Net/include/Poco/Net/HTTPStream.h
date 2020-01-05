@@ -43,7 +43,10 @@ public:
 	HTTPStreamBuf(HTTPSession& session, openmode mode);
 	~HTTPStreamBuf();
 	void close();
-	
+
+	size_t getWritten() const;
+	size_t getReaded() const;
+
 protected:
 	int readFromDevice(char* buffer, std::streamsize length);
 	int writeToDevice(const char* buffer, std::streamsize length);
@@ -51,6 +54,8 @@ protected:
 private:
 	HTTPSession& _session;
 	openmode     _mode;
+	size_t       _readedBytes = 0;
+	size_t       _writtenBytes = 0;
 };
 
 
