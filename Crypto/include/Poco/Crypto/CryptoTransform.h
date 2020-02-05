@@ -19,6 +19,7 @@
 
 
 #include "Poco/Crypto/Crypto.h"
+#include "Poco/SharedPtr.h"
 #include <ios>
 
 
@@ -35,6 +36,8 @@ class Crypto_API CryptoTransform
 	/// perform encryption or decryption of data.
 {
 public:
+	using Ptr = Poco::SharedPtr<CryptoTransform>;
+
 	CryptoTransform();
 		/// Creates a new CryptoTransform object.
 
@@ -49,7 +52,7 @@ public:
 		/// padding and the padding is checked and removed when decrypting. If the padding parameter is zero then
 		/// no padding is performed, the total amount of data encrypted or decrypted must then be a multiple of
 		/// the block size or an error will occur.
-		
+
 	virtual std::string getTag(std::size_t tagSize = 16) = 0;
 		/// Returns the GCM tag after encrypting using GCM mode.
 		///
@@ -63,9 +66,9 @@ public:
 
 	virtual std::streamsize transform(
 		const unsigned char* input,
-		std::streamsize inputLength,
-		unsigned char* output,
-		std::streamsize outputLength) = 0;
+		std::streamsize		 inputLength,
+		unsigned char*		 output,
+		std::streamsize		 outputLength) = 0;
 		/// Transforms a chunk of data. The inputLength is arbitrary and does not
 		/// need to be a multiple of the block size. The output buffer has a maximum
 		/// capacity of the given outputLength that must be at least

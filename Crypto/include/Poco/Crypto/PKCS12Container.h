@@ -1,8 +1,6 @@
 //
 // PKCS12Container.h
 //
-// $Id: //poco/1.4/Crypto/include/Poco/Crypto/PKCS12Container.h#2 $
-//
 // Library: Crypto
 // Package: Certificate
 // Module:  PKCS12Container
@@ -25,8 +23,8 @@
 #include "Poco/Crypto/X509Certificate.h"
 #include "Poco/Crypto/EVPPKey.h"
 #include "Poco/Path.h"
-#include <istream>
 #include <memory>
+#include <istream>
 #include <openssl/pkcs12.h>
 
 
@@ -38,8 +36,8 @@ class Crypto_API PKCS12Container
 	/// This class implements PKCS#12 container functionality.
 {
 public:
-	typedef X509Certificate::List CAList;
-	typedef std::vector<std::string> CANameList;
+	using CAList = X509Certificate::List;
+	using CANameList = std::vector<std::string>;
 
 	explicit PKCS12Container(std::istream& istr, const std::string& password = "");
 		/// Creates the PKCS12Container object from a stream.
@@ -50,13 +48,13 @@ public:
 	PKCS12Container(const PKCS12Container& cont);
 		/// Copy constructor.
 
+	PKCS12Container(PKCS12Container&& cont) noexcept;
+		/// Move constructor.
+
 	PKCS12Container& operator = (const PKCS12Container& cont);
 		/// Assignment operator.
 
-	PKCS12Container(PKCS12Container&& cont);
-		/// Move constructor.
-
-	PKCS12Container& operator = (PKCS12Container&& cont);
+	PKCS12Container& operator = (PKCS12Container&& cont) noexcept;
 		/// Move assignment operator.
 
 	~PKCS12Container();
@@ -88,10 +86,10 @@ private:
 	void load(PKCS12* pPKCS12, const std::string& password = "");
 	std::string extractFriendlyName(X509* pCert);
 
-	typedef std::unique_ptr<X509Certificate> CertPtr;
+	using CertPtr = std::unique_ptr<X509Certificate>;
 
 	OpenSSLInitializer _openSSLInitializer;
-	EVP_PKEY*          _pKey = 0;
+	EVP_PKEY*          _pKey;
 	CertPtr            _pX509Cert;
 	CAList             _caCertList;
 	CANameList         _caCertNames;
@@ -105,13 +103,13 @@ private:
 
 inline bool PKCS12Container::hasX509Certificate() const
 {
-	return (bool) _pX509Cert;
+	return _pX509Cert.get() != 0;
 }
 
 
 inline const X509Certificate& PKCS12Container::getX509Certificate() const
 {
-	if (!_pX509Cert)
+	if (!hasX509Certificate())
 		throw NotFoundException("PKCS12Container X509 certificate");
 	return *_pX509Cert;
 }

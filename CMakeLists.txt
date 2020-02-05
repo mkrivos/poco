@@ -103,19 +103,11 @@ if(WIN32)
     option(POCO_ENABLE_NETSSL_WIN "NetSSL Windows" ON)
 endif()
 
-if(POCO_ENABLE_NETSSL OR POCO_ENABLE_CRYPTO OR (POCO_ENABLE_SQL_MYSQL AND MINGW))
-	find_package(OpenSSL REQUIRED)
-else()
-	find_package(OpenSSL)
-endif()
+find_package(OpenSSL REQUIRED)
 
-if(OPENSSL_FOUND)
-	option(POCO_ENABLE_NETSSL "Enable NetSSL" ON)
-	option(POCO_ENABLE_CRYPTO "Enable Crypto" ON)
-else()
-	option(POCO_ENABLE_NETSSL "Enable NetSSL" OFF)
-	option(POCO_ENABLE_CRYPTO "Enable Crypto" OFF)
-endif()
+option(ENABLE_NETSSL "Enable NetSSL" ON)
+option(ENABLE_CRYPTO "Enable Crypto" ON)
+option(ENABLE_JWT "Enable JWT" ON)
 
 if(POCO_ENABLE_APACHECONNECTOR)
     find_package(APR REQUIRED)
@@ -397,6 +389,10 @@ if(POCO_ENABLE_PDF)
     list(APPEND Poco_COMPONENTS "PDF")
 endif()
 
+if(EXISTS ${PROJECT_SOURCE_DIR}/JWT AND ENABLE_JWT)
+    add_subdirectory(JWT)
+    list(APPEND Poco_COMPONENTS "JWT")
+endif()
 
 #NetSSL
 

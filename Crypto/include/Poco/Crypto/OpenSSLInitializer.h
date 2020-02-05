@@ -19,11 +19,10 @@
 
 
 #include "Poco/Crypto/Crypto.h"
-#include "Poco/Crypto/CryptoException.h"
 #include "Poco/Mutex.h"
 #include "Poco/AtomicCounter.h"
 #include <openssl/crypto.h>
-#include <openssl/opensslv.h>
+
 #if defined(OPENSSL_FIPS) && OPENSSL_VERSION_NUMBER < 0x010001000L
 #include <openssl/fips.h>
 #endif
@@ -67,8 +66,6 @@ public:
 	static void enableFIPSMode(bool enabled);
 		// Enable or disable FIPS mode. If FIPS is not available, this method doesn't do anything.
 
-	static void disableSSLInitialization(); // Call if OpenSSL is already being initialized by another component before constructing any OpenSSLInitializers.
-
 protected:
 	enum
 	{
@@ -77,18 +74,14 @@ protected:
 	
 	// OpenSSL multithreading support
 	static void lock(int mode, int n, const char* file, int line);
-#ifndef POCO_OS_FAMILY_WINDOWS
 	static unsigned long id();
-#endif
 	static struct CRYPTO_dynlock_value* dynlockCreate(const char* file, int line);
 	static void dynlock(int mode, struct CRYPTO_dynlock_value* lock, const char* file, int line);
 	static void dynlockDestroy(struct CRYPTO_dynlock_value* lock, const char* file, int line);
 
 private:
-	static Poco::FastMutex _mutex;
 	static Poco::FastMutex* _mutexes;
-	static int _rc;
-	static bool _disableSSLInitialization;
+	static Poco::AtomicCounter _rc;
 };
 
 
@@ -115,19 +108,8 @@ inline void OpenSSLInitializer::enableFIPSMode(bool /*enabled*/)
 }
 #endif
 
-inline void OpenSSLInitializer::disableSSLInitialization()
-{
-	_disableSSLInitialization = true;
-}
-
 
 } } // namespace Poco::Crypto
-
-
-// needed for OpenSSL static link
-#if defined(_WIN32) && !defined(POCO_DLL) && (POCO_MSVS_VERSION >= 2015) && !defined(POCO_EXTERNAL_OPENSSL)
-	extern "C" FILE * __cdecl __iob_func(void);
-#endif
 
 
 #endif // Crypto_OpenSSLInitializer_INCLUDED

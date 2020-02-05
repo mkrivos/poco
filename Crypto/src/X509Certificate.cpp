@@ -27,6 +27,14 @@
 #include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
+#include <openssl/bn.h>
+
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#define ASN1_STRING_get0_data ASN1_STRING_data
+#define X509_get0_notBefore X509_get_notBefore
+#define X509_get0_notAfter X509_get_notAfter
+#endif
 
 
 namespace Poco {
@@ -60,7 +68,7 @@ X509Certificate::X509Certificate(X509* pCert, bool shared):
 	_pCert(pCert)
 {
 	poco_check_ptr(_pCert);
-	
+
 	if (shared)
 	{
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L
@@ -84,10 +92,31 @@ X509Certificate::X509Certificate(const X509Certificate& cert):
 }
 
 
+X509Certificate::X509Certificate(X509Certificate&& cert) noexcept:
+	_issuerName(std::move(cert._issuerName)),
+	_subjectName(std::move(cert._subjectName)),
+	_serialNumber(std::move(cert._serialNumber)),
+	_pCert(cert._pCert)
+{
+	cert._pCert = nullptr;
+}
+
+
 X509Certificate& X509Certificate::operator = (const X509Certificate& cert)
 {
 	X509Certificate tmp(cert);
 	swap(tmp);
+	return *this;
+}
+
+
+X509Certificate& X509Certificate::operator = (X509Certificate&& cert) noexcept
+{
+	_issuerName = std::move(cert._issuerName);
+	_subjectName = std::move(cert._subjectName);
+	_serialNumber = std::move(cert._serialNumber);
+	if (_pCert) X509_free(_pCert);
+	_pCert = cert._pCert; cert._pCert = nullptr;
 	return *this;
 }
 
@@ -104,7 +133,7 @@ void X509Certificate::swap(X509Certificate& cert)
 
 X509Certificate::~X509Certificate()
 {
-	X509_free(_pCert);
+	if (_pCert) X509_free(_pCert);
 }
 
 
@@ -194,13 +223,22 @@ void X509Certificate::save(const std::string& path) const
 }
 
 
+std::string _X509_NAME_oneline_utf8(X509_NAME *name)
+{
+	BIO * bio_out = BIO_new(BIO_s_mem());
+	X509_NAME_print_ex(bio_out, name, 0, (ASN1_STRFLGS_RFC2253 | XN_FLAG_SEP_COMMA_PLUS | XN_FLAG_FN_SN | XN_FLAG_DUMP_UNKNOWN_FIELDS) & ~ASN1_STRFLGS_ESC_MSB);
+	BUF_MEM *bio_buf;
+	BIO_get_mem_ptr(bio_out, &bio_buf);
+	std::string line = std::string(bio_buf->data, bio_buf->length);
+	BIO_free(bio_out);
+	return line;
+}
+
+
 void X509Certificate::init()
 {
-	char buffer[NAME_BUFFER_SIZE];
-	X509_NAME_oneline(X509_get_issuer_name(_pCert), buffer, sizeof(buffer));
-	_issuerName = buffer;
-	X509_NAME_oneline(X509_get_subject_name(_pCert), buffer, sizeof(buffer));
-	_subjectName = buffer;
+	_issuerName = _X509_NAME_oneline_utf8(X509_get_issuer_name(_pCert));
+	_subjectName = _X509_NAME_oneline_utf8(X509_get_subject_name(_pCert));
 	BIGNUM* pBN = ASN1_INTEGER_to_BN(X509_get_serialNumber(const_cast<X509*>(_pCert)), 0);
 	if (pBN)
 	{
@@ -255,7 +293,7 @@ void X509Certificate::extractNames(std::string& cmnName, std::set<std::string>& 
 			const GENERAL_NAME* name = sk_GENERAL_NAME_value(names, i);
 			if (name->type == GEN_DNS)
 			{
-				const char* data = reinterpret_cast<char*>(ASN1_STRING_data(name->d.ia5));
+				const char* data = reinterpret_cast<const char*>(ASN1_STRING_get0_data(name->d.ia5));
 				std::size_t len = ASN1_STRING_length(name->d.ia5);
 				domainNames.insert(std::string(data, len));
 			}
@@ -273,19 +311,41 @@ void X509Certificate::extractNames(std::string& cmnName, std::set<std::string>& 
 
 Poco::DateTime X509Certificate::validFrom() const
 {
-	ASN1_TIME* certTime = X509_get_notBefore(_pCert);
+	const ASN1_TIME* certTime = X509_get0_notBefore(_pCert);
 	std::string dateTime(reinterpret_cast<char*>(certTime->data));
 	int tzd;
-	return DateTimeParser::parse("%y%m%d%H%M%S", dateTime, tzd);
+	if (certTime->type == V_ASN1_UTCTIME)
+	{
+		return DateTimeParser::parse("%y%m%d%H%M%S", dateTime, tzd);
+	}
+	else if (certTime->type == V_ASN1_GENERALIZEDTIME)
+	{
+		return DateTimeParser::parse("%Y%m%d%H%M%S", dateTime, tzd);
+	}
+	else
+	{
+		throw NotImplementedException("Unsupported date/time format in notBefore");
+	}
 }
 
-	
+
 Poco::DateTime X509Certificate::expiresOn() const
 {
-	ASN1_TIME* certTime = X509_get_notAfter(_pCert);
+	const ASN1_TIME* certTime = X509_get0_notAfter(_pCert);
 	std::string dateTime(reinterpret_cast<char*>(certTime->data));
 	int tzd;
-	return DateTimeParser::parse("%y%m%d%H%M%S", dateTime, tzd);
+	if (certTime->type == V_ASN1_UTCTIME)
+	{
+		return DateTimeParser::parse("%y%m%d%H%M%S", dateTime, tzd);
+	}
+	else if (certTime->type == V_ASN1_GENERALIZEDTIME)
+	{
+		return DateTimeParser::parse("%Y%m%d%H%M%S", dateTime, tzd);
+	}
+	else
+	{
+		throw NotImplementedException("Unsupported date/time format in notBefore");
+	}
 }
 
 
@@ -313,7 +373,7 @@ std::string X509Certificate::signatureAlgorithm() const
 {
 	int sigNID = NID_undef;
 
-#if (OPENSSL_VERSION_NUMBER >=  0x1010000fL) && !defined(LIBRESSL_VERSION_NUMBER)
+#if (OPENSSL_VERSION_NUMBER >=  0x1010000fL)
 	sigNID = X509_get_signature_nid(_pCert);
 #else
 	poco_check_ptr(_pCert->sig_alg);
@@ -325,7 +385,7 @@ std::string X509Certificate::signatureAlgorithm() const
 		const char* pAlgName = OBJ_nid2ln(sigNID);
 		if (pAlgName) return std::string(pAlgName);
 		else throw OpenSSLException(Poco::format("X509Certificate::"
-			"signatureAlgorithm(): OBJ_nid2ln(%d)", sigNID));
+				"signatureAlgorithm(): OBJ_nid2ln(%d)", sigNID));
 	}
 	else
 		throw NotFoundException("X509Certificate::signatureAlgorithm()");
@@ -380,20 +440,6 @@ void X509Certificate::print(std::ostream& out) const
 	out << "organizationUnitName: " << subjectName(X509Certificate::NID_ORGANIZATION_UNIT_NAME) << std::endl;
 	out << "emailAddress: " << subjectName(X509Certificate::NID_PKCS9_EMAIL_ADDRESS) << std::endl;
 	out << "serialNumber: " << subjectName(X509Certificate::NID_SERIAL_NUMBER) << std::endl;
-}
-
-
-void X509Certificate::printAll(std::ostream& out) const
-{
-	X509_NAME *subj = X509_get_subject_name(_pCert);
-
-	for (int i = 0; i < X509_NAME_entry_count(subj); ++i)
-	{
-		X509_NAME_ENTRY* e = X509_NAME_get_entry(subj, i);
-		ASN1_STRING* d = X509_NAME_ENTRY_get_data(e);
-		unsigned char* str = ASN1_STRING_data(d);
-		out << (char*) str << std::endl;
-	}
 }
 
 

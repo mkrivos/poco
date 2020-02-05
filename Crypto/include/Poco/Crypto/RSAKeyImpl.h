@@ -47,10 +47,8 @@ class RSAKeyImpl: public KeyPairImpl
 	/// class RSAKeyImpl
 {
 public:
-	typedef Poco::AutoPtr<RSAKeyImpl> Ptr;
-	typedef std::vector<unsigned char> ByteVec;
-
-	RSAKeyImpl() = delete;
+	using Ptr = Poco::AutoPtr<RSAKeyImpl>;
+	using ByteVec = std::vector<unsigned char>;
 
 	RSAKeyImpl(const EVPPKey& key);
 		/// Constructs ECKeyImpl by extracting the EC key.
@@ -67,8 +65,8 @@ public:
 
 	RSAKeyImpl(const std::string& publicKeyFile, const std::string& privateKeyFile, const std::string& privateKeyPassphrase);
 		/// Creates the RSAKey, by reading public and private key from the given files and
-		/// using the given passphrase for the private key. Can only by used for signing if
-		/// a private key is available.
+		/// using the given passphrase for the private key. Can only by used for signing if 
+		/// a private key is available. 
 
 	RSAKeyImpl(std::istream* pPublicKeyStream, std::istream* pPrivateKeyStream, const std::string& privateKeyPassphrase);
 		/// Creates the RSAKey. Can only by used for signing if pPrivKey
@@ -99,7 +97,7 @@ public:
 	void save(const std::string& publicKeyFile,
 		const std::string& privateKeyFile = "",
 		const std::string& privateKeyPassphrase = "") const;
-		/// Exports the public and private keys to the given files.
+		/// Exports the public and private keys to the given files. 
 		///
 		/// If an empty filename is specified, the corresponding key
 		/// is not exported.
@@ -113,6 +111,8 @@ public:
 		/// key is not exported.
 
 private:
+	RSAKeyImpl();
+
 	void freeRSA();
 	static ByteVec convertToByteVec(const BIGNUM* bn);
 

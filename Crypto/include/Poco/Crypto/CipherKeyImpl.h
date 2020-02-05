@@ -33,12 +33,12 @@ namespace Poco {
 namespace Crypto {
 
 
-class Crypto_API CipherKeyImpl: public RefCountedObject
+class CipherKeyImpl: public RefCountedObject
 	/// An implementation of the CipherKey class for OpenSSL's crypto library.
 {
 public:
-	typedef std::vector<unsigned char> ByteVec;
-	typedef Poco::AutoPtr<CipherKeyImpl> Ptr;
+	using Ptr = Poco::AutoPtr<CipherKeyImpl>;
+	using ByteVec = std::vector<unsigned char>;
 
 	enum Mode
 		/// Cipher mode of operation. This mode determines how multiple blocks
@@ -58,7 +58,7 @@ public:
 		const std::string& passphrase,
 		const std::string& salt,
 		int iterationCount,
-		const std::string &digest);
+		const std::string& digest);
 		/// Creates a new CipherKeyImpl object, using
 		/// the given cipher name, passphrase, salt value
 		/// and iteration count.
@@ -90,7 +90,7 @@ public:
 
 	Mode mode() const;
 		/// Returns the Cipher's mode of operation.
-	
+
 	const ByteVec& getKey() const;
 		/// Returns the key for the Cipher.
 
@@ -105,7 +105,7 @@ public:
 
 	const EVP_CIPHER* cipher();
 		/// Returns the cipher object
-	
+
 private:
 	void generateKey(const std::string& passphrase,
 		const std::string& salt,
@@ -121,9 +121,9 @@ private:
 private:
 	const EVP_CIPHER*  _pCipher;
 	const EVP_MD*      _pDigest;
-	std::string        _name;
-	ByteVec            _key;
-	ByteVec            _iv;
+	std::string	       _name;
+	ByteVec		       _key;
+	ByteVec		       _iv;
 	OpenSSLInitializer _openSSLInitializer;
 };
 

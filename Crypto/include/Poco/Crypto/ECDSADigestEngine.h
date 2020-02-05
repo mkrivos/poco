@@ -64,7 +64,7 @@ public:
 	void reset();
 		/// Resets the engine so that a new
 		/// digest can be computed.
-		
+
 	const DigestEngine::Digest& digest();
 		/// Finishes the computation of the digest
 		/// (the first time it's called) and
@@ -92,6 +92,35 @@ private:
 	Poco::Crypto::DigestEngine _engine;
 	Poco::DigestEngine::Digest _digest;
 	Poco::DigestEngine::Digest _signature;
+};
+
+
+class Crypto_API ECDSASignature
+	/// A helper class for dealing with ECDSA signatures.
+{
+public:
+	using ByteVec = std::vector<unsigned char>;
+
+	explicit ECDSASignature(const ByteVec& derSignature);
+		/// Creates the ECDSASignature from a DER-encoded signature.
+
+	ECDSASignature(const ByteVec& rawR, const ByteVec& rawS);
+		/// Creates the ECDSASignature from raw r and s values.
+
+	~ECDSASignature();
+		/// Destroys the ECDSASignature.
+
+	ByteVec toDER() const;
+		/// Returns a buffer containing the DER-encoded signature.
+
+	ByteVec rawR() const;
+		/// Returns a raw P value.
+
+	ByteVec rawS() const;
+		/// Returns a raw Q value.
+
+private:
+	ECDSA_SIG* _pSig;
 };
 
 

@@ -57,8 +57,8 @@ class Crypto_API CipherKey
 	///
 {
 public:
-	typedef CipherKeyImpl::Mode Mode;
-	typedef CipherKeyImpl::ByteVec ByteVec;
+	using Mode = CipherKeyImpl::Mode;
+	using ByteVec = CipherKeyImpl::ByteVec;
 
 	enum
 	{
@@ -90,8 +90,20 @@ public:
 		/// Creates a new CipherKeyImpl object. Autoinitializes key and
 		/// initialization vector.
 
+	CipherKey(const CipherKey& other);
+		/// Copy constructor.
+
+	CipherKey(CipherKey&& other) noexcept;
+		/// Copy constructor.
+
 	~CipherKey();
 		/// Destroys the CipherKeyImpl.
+
+	CipherKey& operator = (const CipherKey& other);
+		/// Assignment.
+
+	CipherKey& operator = (CipherKey&& other) noexcept;
+		/// Move assignment.
 
 	const std::string& name() const;
 		/// Returns the name of the Cipher.
@@ -107,7 +119,7 @@ public:
 
 	Mode mode() const;
 		/// Returns the Cipher's mode of operation.
-	
+
 	const ByteVec& getKey() const;
 		/// Returns the key for the Cipher.
 

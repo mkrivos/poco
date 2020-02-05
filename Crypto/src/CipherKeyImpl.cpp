@@ -29,11 +29,12 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	const std::string& passphrase,
 	const std::string& salt,
 	int iterationCount,
-	const std::string& digest): _pCipher(0),
-		_pDigest(0),
-		_name(name),
-		_key(),
-		_iv()
+	const std::string& digest):
+	_pCipher(0),
+	_pDigest(0),
+	_name(name),
+	_key(),
+	_iv()
 {
 	// dummy access to Cipherfactory so that the EVP lib is initilaized
 	CipherFactory::defaultFactory();
@@ -47,7 +48,6 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	if (!_pDigest)
 		throw Poco::NotFoundException("Digest " + name + " was not found");
 
-
 	_key = ByteVec(keySize());
 	_iv = ByteVec(ivSize());
 	generateKey(passphrase, salt, iterationCount);
@@ -56,13 +56,14 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 
 CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	const ByteVec& key,
-	const ByteVec& iv): _pCipher(0),
-		_pDigest(0),
-		_name(name),
-		_key(key),
-		_iv(iv)
+	const ByteVec& iv):
+	_pCipher(0),
+	_pDigest(0),
+	_name(name),
+	_key(key),
+	_iv(iv)
 {
-	// dummy access to Cipherfactory so that the EVP lib is initilaized
+	// dummy access to Cipherfactory so that the EVP lib is initialized
 	CipherFactory::defaultFactory();
 	_pCipher = EVP_get_cipherbyname(name.c_str());
 
@@ -70,8 +71,9 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 		throw Poco::NotFoundException("Cipher " + name + " was not found");
 }
 
-	
-CipherKeyImpl::CipherKeyImpl(const std::string& name): _pCipher(0),
+
+CipherKeyImpl::CipherKeyImpl(const std::string& name):
+	_pCipher(0),
 	_pDigest(0),
 	_name(name),
 	_key(),
@@ -134,7 +136,7 @@ void CipherKeyImpl::generateKey()
 
 	getRandomBytes(vec, keySize());
 	setKey(vec);
-	
+
 	getRandomBytes(vec, ivSize());
 	setIV(vec);
 }
@@ -143,7 +145,7 @@ void CipherKeyImpl::generateKey()
 void CipherKeyImpl::getRandomBytes(ByteVec& vec, std::size_t count)
 {
 	Poco::RandomInputStream random;
-	
+
 	vec.clear();
 	vec.reserve(count);
 
@@ -162,6 +164,7 @@ void CipherKeyImpl::generateKey(
 
 	// OpenSSL documentation specifies that the salt must be an 8-byte array.
 	unsigned char saltBytes[8];
+
 	if (!salt.empty())
 	{
 		int len = static_cast<int>(salt.size());
@@ -172,7 +175,7 @@ void CipherKeyImpl::generateKey(
 			saltBytes[i % 8] ^= salt.at(i);
 	}
 
-	// Now create the key and IV, using the digest set in the constructor.
+	// Now create the key and IV, using the MD5 digest algorithm.
 	int keySize = EVP_BytesToKey(
 		_pCipher,
 		_pDigest ? _pDigest : EVP_md5(),

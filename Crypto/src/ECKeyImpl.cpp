@@ -18,6 +18,7 @@
 #include "Poco/Crypto/PKCS12Container.h"
 #include "Poco/FileStream.h"
 #include "Poco/Format.h"
+#include "Poco/StreamCopier.h"
 #include <sstream>
 #include <openssl/evp.h>
 #if OPENSSL_VERSION_NUMBER >= 0x00908000L
@@ -77,8 +78,8 @@ ECKeyImpl::ECKeyImpl(int curve):
 }
 
 
-ECKeyImpl::ECKeyImpl(const std::string& publicKeyFile,
-	const std::string& privateKeyFile,
+ECKeyImpl::ECKeyImpl(const std::string& publicKeyFile, 
+	const std::string& privateKeyFile, 
 	const std::string& privateKeyPassphrase): KeyPairImpl("ec", KT_EC_IMPL), _pEC(0)
 {
 	if (EVPPKey::loadKey(&_pEC, PEM_read_PrivateKey, EVP_PKEY_get1_EC_KEY, privateKeyFile, privateKeyPassphrase))
@@ -107,8 +108,8 @@ ECKeyImpl::ECKeyImpl(std::istream* pPublicKeyStream,
 	if (EVPPKey::loadKey(&_pEC, PEM_read_bio_PrivateKey, EVP_PKEY_get1_EC_KEY, pPrivateKeyStream, privateKeyPassphrase))
 	{
 		checkEC(Poco::format("ECKeyImpl(stream, stream, %s)",
-				privateKeyPassphrase.empty() ? privateKeyPassphrase : std::string("***")),
-				"PEM_read_bio_PrivateKey() or EVP_PKEY_get1_EC_KEY()");
+			privateKeyPassphrase.empty() ? privateKeyPassphrase : std::string("***")),
+			"PEM_read_bio_PrivateKey() or EVP_PKEY_get1_EC_KEY()");
 		return; // private key is enough
 	}
 
@@ -172,10 +173,10 @@ int ECKeyImpl::groupId() const
 		}
 		else
 		{
-			throw OpenSSLException("ECKeyImpl::groupId()");
+			throw OpenSSLException("ECKeyImpl::groupName()");
 		}
 	}
-	throw NullPointerException("ECKeyImpl::groupId() => _pEC");
+	throw NullPointerException("ECKeyImpl::groupName() => _pEC");
 }
 
 
@@ -184,7 +185,7 @@ std::string ECKeyImpl::getCurveName(int nid)
 	std::string curveName;
 	size_t len = EC_get_builtin_curves(NULL, 0);
 	EC_builtin_curve* pCurves =
-		(EC_builtin_curve*) OPENSSL_malloc(static_cast<int>(sizeof(EC_builtin_curve) * len));
+			(EC_builtin_curve*) OPENSSL_malloc(sizeof(EC_builtin_curve) * len);
 	if (!pCurves) return curveName;
 
 	if (!EC_get_builtin_curves(pCurves, len))
