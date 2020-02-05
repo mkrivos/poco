@@ -35,13 +35,13 @@
 //      Ax: alpha releases
 //      Bx: beta releases
 //
-#define POCO_VERSION 0x01090900
+#define POCO_VERSION 0x010a0000
 
 
 //
 // Monotonically incremented for any API change/addition
 //
-#define POCO_API_VERSION    20200101
+#define POCO_API_VERSION    20200201
 
 
 #endif // Foundation_Version_INCLUDED
