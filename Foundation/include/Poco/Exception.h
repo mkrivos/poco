@@ -30,7 +30,7 @@ class Foundation_API Exception: public std::exception
 	/// in the Poco class library.
 {
 public:
-	Exception(const std::string& msg, int code = 0);
+	explicit Exception(const std::string& msg, int code = 0);
 		/// Creates an exception.
 
 	Exception(const std::string& msg, const std::string& arg, int code = 0);
@@ -141,8 +141,8 @@ inline int Exception::code() const
 	class API CLS: public BASE														\
 	{																				\
 	public:																			\
-		CLS(int code = CODE);														\
-		CLS(const std::string& msg, int code = CODE);								\
+		explicit CLS(int code = CODE);														\
+		explicit CLS(const std::string& msg, int code = CODE);								\
 		CLS(const std::string& msg, const std::string& arg, int code = CODE);		\
 		CLS(const std::string& msg, const Poco::Exception& exc, int code = CODE);	\
 		CLS(const CLS& exc);														\
@@ -229,6 +229,12 @@ POCO_DECLARE_EXCEPTION(Foundation_API, PoolOverflowException, RuntimeException)
 POCO_DECLARE_EXCEPTION(Foundation_API, NoPermissionException, RuntimeException)
 POCO_DECLARE_EXCEPTION(Foundation_API, OutOfMemoryException, RuntimeException)
 POCO_DECLARE_EXCEPTION(Foundation_API, DataException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, InterruptedException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, IndexOutOfBoundsException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, UnsupportedOperationException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, EmptyStackException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, StackOverflowException, RuntimeException)
+POCO_DECLARE_EXCEPTION(Foundation_API, ArithmeticException, RuntimeException)
 
 POCO_DECLARE_EXCEPTION(Foundation_API, DataFormatException, DataException)
 POCO_DECLARE_EXCEPTION(Foundation_API, SyntaxException, DataException)

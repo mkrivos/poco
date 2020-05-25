@@ -384,6 +384,7 @@ private:
 	friend class LayeredConfiguration;
 	friend class ConfigurationView;
 	friend class ConfigurationMapper;
+	friend class DomainConfiguration;
 };
 
 

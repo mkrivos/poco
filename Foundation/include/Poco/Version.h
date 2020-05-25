@@ -37,5 +37,6 @@
 //
 #define POCO_VERSION 0x010A0100
 
+#define POCO_API_VERSION 20180101
 
 #endif // Foundation_Version_INCLUDED

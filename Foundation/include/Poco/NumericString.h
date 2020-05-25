@@ -34,13 +34,7 @@
 	#include <locale>
 #endif
 
-#if defined(POCO_NOINTMAX)
-typedef Poco::UInt64 uintmax_t;
-typedef Poco::Int64 intmax_t;
-#endif
-#if !defined (INTMAX_MAX)
-#define INTMAX_MAX std::numeric_limits<intmax_t>::max()
-#endif
+
 #ifdef POCO_COMPILER_MSVC
 #pragma warning(push)
 #pragma warning(disable : 4146)
@@ -76,7 +70,7 @@ namespace Impl {
 	class IsNegativeImpl<false, T>
 	{
 	public:
-		bool operator()(T) { return false; }
+		bool operator()(T /*x*/) { return false; }
 	};
 
 }
@@ -99,14 +93,14 @@ inline bool isIntOverflow(From val)
 	if (std::numeric_limits<To>::is_signed)
 	{
 		ret = (!std::numeric_limits<From>::is_signed &&
-			  (uintmax_t)val > (uintmax_t)INTMAX_MAX) ||
-			  (intmax_t)val  < (intmax_t)std::numeric_limits<To>::min() ||
-			  (intmax_t)val  > (intmax_t)std::numeric_limits<To>::max();
+			  (std::uintmax_t)val > (std::uintmax_t)INTMAX_MAX) ||
+			  (std::intmax_t)val  < (std::intmax_t)std::numeric_limits<To>::min() ||
+			  (std::intmax_t)val  > (std::intmax_t)std::numeric_limits<To>::max();
 	}
 	else
 	{
 		ret = isNegative(val) ||
-				(uintmax_t)val > (uintmax_t)std::numeric_limits<To>::max();
+				(std::uintmax_t)val > (std::uintmax_t)std::numeric_limits<To>::max();
 	}
 	return ret;
 }
@@ -141,7 +135,7 @@ inline char decimalSeparator()
 	/// default '.' for platforms where locale is unavailable.
 {
 #if !defined(POCO_NO_LOCALE)
-	return std::use_facet<std::numpunct<char>>(std::locale()).decimal_point();
+	return std::use_facet<std::numpunct<char> >(std::locale()).decimal_point();
 #else
 	return '.';
 #endif
@@ -153,7 +147,7 @@ inline char thousandSeparator()
 	/// default ',' for platforms where locale is unavailable.
 {
 #if !defined(POCO_NO_LOCALE)
-	return std::use_facet<std::numpunct<char>>(std::locale()).thousands_sep();
+	return std::use_facet<std::numpunct<char> >(std::locale()).thousands_sep();
 #else
 	return ',';
 #endif
@@ -190,24 +184,24 @@ bool strToInt(const char* pStr, I& outResult, short base, char thSep = ',')
 
 	// all numbers are parsed as positive; the sign
 	// for negative numbers is adjusted after parsing
-	uintmax_t limitCheck = std::numeric_limits<I>::max();
+	::uintmax_t limitCheck = std::numeric_limits<I>::max();
 	if (negative)
 	{
 		poco_assert_dbg(std::numeric_limits<I>::is_signed);
 		// to cover the entire range, (-min > max) has to be
 		// taken into account;
 		// to avoid overflow for the largest int size,
-		// we resort to FPEnvironment::copySign() (ie. floating-point)
-		if (sizeof(I) == sizeof(intmax_t))
-			limitCheck = static_cast<uintmax_t>(FPEnvironment::copySign(static_cast<double>(std::numeric_limits<I>::min()), 1));
+		// we resort to ::copysign() (ie. floating-point)
+		if (sizeof(I) == sizeof(::intmax_t))
+			limitCheck = static_cast<::uintmax_t>(::copysign(std::numeric_limits<I>::min(), 1));
 		else
 		{
-			intmax_t i = std::numeric_limits<I>::min();
+			::intmax_t i = std::numeric_limits<I>::min();
 			limitCheck = -i;
 		}
 	}
 
-	uintmax_t result = 0;
+	std::uintmax_t result = 0;
 	for (; *pStr != '\0'; ++pStr)
 	{
 		if  (result > (limitCheck / base)) return false;
@@ -270,11 +264,11 @@ bool strToInt(const char* pStr, I& outResult, short base, char thSep = ',')
 	if (negative && (base == 10))
 	{
 		poco_assert_dbg(std::numeric_limits<I>::is_signed);
-		intmax_t i;
-		if (sizeof(I) == sizeof(intmax_t))
-			i = static_cast<intmax_t>(FPEnvironment::copySign(static_cast<double>(result), -1));
+		::intmax_t i;
+		if (sizeof(I) == sizeof(::intmax_t))
+			i = static_cast<::intmax_t>(::copysign(result, -1));
 		else
-			i = static_cast<intmax_t>(-result);
+			i = static_cast<::intmax_t>(-result);
 		if (isIntOverflow<I>(i)) return false;
 		outResult = static_cast<I>(i);
 	}
@@ -312,7 +306,7 @@ namespace Impl {
 		Ptr(char* ptr, std::size_t offset): _beg(ptr), _cur(ptr), _end(ptr + offset)
 		{
 		}
-
+	
 		char*& operator ++ () // prefix
 		{
 			checkBounds(_cur + 1);
@@ -325,7 +319,7 @@ namespace Impl {
 			char* tmp = _cur++;
 			return tmp;
 		}
-
+	
 		char*& operator -- () // prefix
 		{
 			checkBounds(_cur - 1);
@@ -370,7 +364,7 @@ namespace Impl {
 		const char* _beg;
 		char*       _cur;
 		const char* _end;
-};
+};	
 
 } // namespace Impl
 
@@ -475,7 +469,7 @@ bool uIntToStr(T value,
 		*result = '\0';
 		return false;
 	}
-
+	
 	Impl::Ptr ptr(result, size);
 	int thCount = 0;
 	T tmpVal;
@@ -490,31 +484,31 @@ bool uIntToStr(T value,
 			thCount = 0;
 		}
 	} while (value);
-
+	
 	if ('0' == fill)
 	{
 		if (prefix && base == 010) --width;
 		if (prefix && base == 0x10) width -= 2;
 		while ((ptr - result) < width) *ptr++ = fill;
 	}
-
+	
 	if (prefix && base == 010) *ptr++ = '0';
 	else if (prefix && base == 0x10)
 	{
 		*ptr++ = 'x';
 		*ptr++ = '0';
 	}
-
+	
 	if ('0' != fill)
 	{
 		while ((ptr - result) < width) *ptr++ = fill;
 	}
-
+	
 	size = ptr - result;
 	poco_assert_dbg (size <= ptr.span());
 	poco_assert_dbg ((-1 == width) || (size >= size_t(width)));
 	*ptr-- = '\0';
-
+	
 	char* ptrr = result;
 	char tmp;
 	while(ptrr < ptr)
@@ -523,34 +517,60 @@ bool uIntToStr(T value,
 		*ptr--  = *ptrr;
 		*ptrr++ = tmp;
 	}
-
+	
 	return true;
 }
 
-
 template <typename T>
-bool intToStr (T number, unsigned short base, std::string& result, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
-	/// Converts integer to string; This is a wrapper function, for details see see the
-	/// bool intToStr(T, unsigned short, char*, int, int, char, char) implementation.
+bool intToStr(T number, unsigned short base, std::string& result, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
+  /// Converts integer to string; This is a wrapper function, for details see see the
+  /// bool intToStr(T, unsigned short, char*, int, int, char, char) implementation.
 {
-	char res[POCO_MAX_INT_STRING_LEN] = {0};
-	std::size_t size = POCO_MAX_INT_STRING_LEN;
-	bool ret = intToStr(number, base, res, size, prefix, width, fill, thSep);
-	result.assign(res, size);
-	return ret;
+  char res[POCO_MAX_INT_STRING_LEN] = { 0 };
+  std::size_t size = POCO_MAX_INT_STRING_LEN;
+  bool ret = intToStr(number, base, res, size, prefix, width, fill, thSep);
+  result.assign(res, size);
+  return ret;
 }
 
 
 template <typename T>
-bool uIntToStr (T number, unsigned short base, std::string& result, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
+std::string intToStr (T number, unsigned short base, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
+	/// Converts integer to string; This is a wrapper function, for details see see the
+	/// bool intToStr(T, unsigned short, char*, int, int, char, char) implementation.
+{
+	std::string result;
+	char res[POCO_MAX_INT_STRING_LEN] = {0};
+	std::size_t size = POCO_MAX_INT_STRING_LEN;
+	const bool ret = intToStr(number, base, res, size, prefix, width, fill, thSep);
+	if (ret) result.assign(res, size);
+	return result;
+}
+
+template <typename T>
+bool uIntToStr(T number, unsigned short base, std::string& result, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
+  /// Converts unsigned integer to string; This is a wrapper function, for details see see the
+  /// bool uIntToStr(T, unsigned short, char*, int, int, char, char) implementation.
+{
+  char res[POCO_MAX_INT_STRING_LEN] = { 0 };
+  std::size_t size = POCO_MAX_INT_STRING_LEN;
+  bool ret = uIntToStr(number, base, res, size, prefix, width, fill, thSep);
+  result.assign(res, size);
+  return ret;
+}
+	
+	
+template <typename T>
+std::string uIntToStr (T number, unsigned short base, bool prefix = false, int width = -1, char fill = ' ', char thSep = 0)
 	/// Converts unsigned integer to string; This is a wrapper function, for details see see the
 	/// bool uIntToStr(T, unsigned short, char*, int, int, char, char) implementation.
 {
+	std::string result;
 	char res[POCO_MAX_INT_STRING_LEN] = {0};
 	std::size_t size = POCO_MAX_INT_STRING_LEN;
-	bool ret = uIntToStr(number, base, res, size, prefix, width, fill, thSep);
-	result.assign(res, size);
-	return ret;
+	const bool ret = uIntToStr(number, base, res, size, prefix, width, fill, thSep);
+	if (ret) result.assign(res, size);
+	return result;
 }
 
 
@@ -593,6 +613,17 @@ Foundation_API std::string& floatToStr(std::string& str,
 	/// and width (total length of formatted string).
 
 
+Foundation_API std::string floatToStr(float value,
+  int precision = -1,
+  int width = 0,
+  char thSep = 0,
+  char decSep = 0);
+  /// Converts a float value, returns it to the supplied string.
+  /// This function calls floatToStr(char*, int, float, int, int) and formats the result according to
+  /// precision (total number of digits after the decimal point, -1 means ignore precision argument)
+  /// and width (total length of formatted string).
+
+
 Foundation_API std::string& floatToFixedStr(std::string& str,
 	float value,
 	int precision,
@@ -602,6 +633,16 @@ Foundation_API std::string& floatToFixedStr(std::string& str,
 	/// Converts a float value, assigns it to the supplied string and returns the reference.
 	/// This function calls floatToFixedStr(char*, int, float, int) and formats the result according to
 	/// precision (total number of digits after the decimal point) and width (total length of formatted string).
+
+
+Foundation_API std::string floatToFixedStr(float value,
+  int precision,
+  int width = 0,
+  char thSep = 0,
+  char decSep = 0);
+  /// Converts a float value, returns it to the supplied string.
+  /// This function calls floatToFixedStr(char*, int, float, int) and formats the result according to
+  /// precision (total number of digits after the decimal point) and width (total length of formatted string).
 
 
 Foundation_API void doubleToStr(char* buffer,
@@ -636,6 +677,17 @@ Foundation_API std::string& doubleToStr(std::string& str,
 	/// and width (total length of formatted string).
 
 
+Foundation_API std::string doubleToStr(double value,
+  int precision = -1,
+  int width = 0,
+  char thSep = 0,
+  char decSep = 0);
+  /// Converts a double value, returns it to the supplied string.
+  /// This function calls doubleToStr(char*, int, double, int, int) and formats the result according to
+  /// precision (total number of digits after the decimal point, -1 means ignore precision argument)
+  /// and width (total length of formatted string).
+
+
 Foundation_API std::string& doubleToFixedStr(std::string& str,
 	double value,
 	int precision = -1,
@@ -647,10 +699,20 @@ Foundation_API std::string& doubleToFixedStr(std::string& str,
 	/// precision (total number of digits after the decimal point) and width (total length of formatted string).
 
 
+Foundation_API std::string doubleToFixedStr(double value,
+  int precision = -1,
+  int width = 0,
+  char thSep = 0,
+  char decSep = 0);
+  /// Converts a double value, returns it to the supplied string.
+  /// This function calls doubleToFixedStr(char*, int, double, int) and formats the result according to
+  /// precision (total number of digits after the decimal point) and width (total length of formatted string).
+
+
 Foundation_API float strToFloat(const char* str,
 	const char* inf = POCO_FLT_INF, const char* nan = POCO_FLT_NAN);
 	/// Converts the string of characters into single-precision floating point number.
-	/// Function uses double_conversion::DoubleToStringConverter to do the conversion.
+	/// Function uses double_convesrion::DoubleToStringConverter to do the conversion.
 
 
 Foundation_API bool strToFloat(const std::string&, float& result,

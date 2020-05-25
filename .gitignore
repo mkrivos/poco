@@ -16,16 +16,28 @@
 *.vsp
 *.psess
 
+# Make #
+########
+config.build
+config.make
+
+# CMake #
+#########
+cmake_install.cmake
+cmake_uninstall.cmake
+CMakeFiles
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+cmake_*
+cmake-build*
+
 # Gradle #
 ##########
-!gradle.properties
-!settings.gradle
-!build.gradle
-!build.gradle.win
-!travis/.gradle/gradle.properties
 .gradle/
-**/guild/
+gradle/
 coverage/
+guild/
 
 # NuGet #
 #########
@@ -36,26 +48,6 @@ coverage/
 *.msi
 *.wixobj
 *.wixpdb
-
-# Make #
-########
-config.build
-config.make
-
-# CLion #
-########
-.idea/
-
-# CMake #
-########
-cmake_install.cmake
-cmake_uninstall.cmake
-CMakeFiles
-CMakeCache.txt
-CPackConfig.cmake
-CPackSourceConfig.cmake
-cmake_*
-cmake-build-*
 
 # Packages #
 ############
@@ -77,6 +69,7 @@ cmake-build-*
 *.db
 test*.txt
 XML/testsuite/rss.xml
+Zip/testsuite/test.dat
 
 # OS generated files #
 ######################
@@ -103,6 +96,7 @@ Thumbs.db
 *.suo
 *.sdf
 *.opensdf
+*.opendb
 *.tlb
 *.tlh
 *.ilk
@@ -115,8 +109,6 @@ Thumbs.db
 *.tlog
 *.lastbuildstate
 *.unsuccessfulbuild
-*.opendb
-.vs/
 release_shared/
 debug_shared/
 release_static/
@@ -130,17 +122,68 @@ bin64/
 lib/
 lib64/
 pocomsg.h
-**/UpgradeLog*.XML
+*/testsuite/bin/*
+Util/testsuite/TestConfiguration/
+.vs/
 
 # Eclipse generated files #
-###########################
+######################
 .project
 .cproject
 .settings
 cmake-build/
 
+
+# Clion generated files #
+######################
+cmake-build-*
+.idea/
+
 # Temporary files #
 ###################
 *.bak
+
+# Remoting #
+############
+CodeGeneration
+RemotingNG
+XSD
 stage/
 releases/
+Zip/testsuite/data*.bin
+Foundation/testsuite/globtest/
+TestConfiguration/
+
+# openssl binaries #
+####################
+openssl/packages/
+
+!openssl/Ionic/zip-v1.9/Release/*.dll
+!openssl/Ionic/zlib-v1.9/Release/*.dll
+
+!openssl/win32/bin/debug/*.dll
+!openssl/win32/bin/debug/*.lib
+!openssl/win32/bin/release/*.dll
+!openssl/win32/bin/release/*.lib
+
+!openssl/win64/bin/debug/*.dll
+!openssl/win64/bin/debug/*.lib
+!openssl/win64/bin/release/*.dll
+!openssl/win64/bin/release/*.lib
+
+!openssl/win32/lib/debug/*.lib
+!openssl/win32/lib/debug/*.pdb
+!openssl/win32/lib/release/*.lib
+
+!openssl/win64/lib/debug/*.lib
+!openssl/win64/lib/debug/*.pdb
+!openssl/win64/lib/release/*.lib
+
+/Debug
+=======
+
+# Development files #
+#####################
+postgresql/
+mysql/
+/.metadata/

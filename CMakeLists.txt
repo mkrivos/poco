@@ -164,13 +164,13 @@ option(ENABLE_JSON "Enable JSON" ON)
 option(ENABLE_MONGODB "Enable MongoDB" ON)
 option(ENABLE_DATA_SQLITE "Enable Data SQlite" ON)
 option(ENABLE_REDIS "Enable Redis" ON)
-option(ENABLE_PDF "Enable PDF" OFF)
+option(ENABLE_PDF "Enable PDF" ON)
 option(ENABLE_UTIL "Enable Util" ON)
 option(ENABLE_NET "Enable Net" ON)
 
 option(ENABLE_SEVENZIP "Enable SevenZip" OFF)
 option(ENABLE_ZIP "Enable Zip" ON)
-option(ENABLE_CPPPARSER "Enable C++ parser" OFF)
+option(ENABLE_CPPPARSER "Enable C++ parser" ON)
 option(ENABLE_POCODOC "Enable Poco Documentation Generator" OFF)
 option(ENABLE_PAGECOMPILER "Enable PageCompiler" ON)
 option(ENABLE_PAGECOMPILER_FILE2PAGE "Enable File2Page" ON)
@@ -391,6 +391,19 @@ if(EXISTS ${PROJECT_SOURCE_DIR}/Encodings/Compiler AND ENABLE_ENCODINGS_COMPILER
 	add_subdirectory(Encodings/Compiler)
 	list(APPEND Poco_COMPONENTS "EncodingsCompiler")
 endif()
+
+
+IF (REMOTING)
+    add_subdirectory(CodeGeneration)
+    list(APPEND Poco_COMPONENTS "CodeGeneration")
+
+    add_subdirectory(XSD)
+    list(APPEND Poco_COMPONENTS "XSD")
+
+    add_subdirectory(RemotingNG)
+    list(APPEND Poco_COMPONENTS "RemotingNG")
+
+ENDIF (REMOTING)
 
 
 #############################################################
