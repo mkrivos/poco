@@ -22,7 +22,7 @@ namespace Util {
 
 
 const int HelpFormatter::TAB_WIDTH  = 4;
-const int HelpFormatter::LINE_WIDTH = 78;
+const int HelpFormatter::LINE_WIDTH = 160;
 
 
 HelpFormatter::HelpFormatter(const OptionSet& options):
