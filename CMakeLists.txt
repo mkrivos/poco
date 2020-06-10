@@ -85,7 +85,7 @@ if(MSVC)
       "Set to OFF|ON (default is OFF) to control build of POCO as /MT instead of /MD" OFF)
 
     option(POCO_ENABLE_MSVC_MP
-      "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" OFF)
+      "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" ON)
 
 
     # allow disabling of internally built OpenSSL# (see below for details)
