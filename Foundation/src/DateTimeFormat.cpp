@@ -140,12 +140,12 @@ bool DateTimeFormat::hasFormat(const std::string& fmt)
 
 bool DateTimeFormat::isValid(const std::string& dateTime)
 {
-    static RegularExpression sortable(DateTimeFormat::SORTABLE_REGEX);
-    if (sortable.match(dateTime))
-        return true;
-
     static RegularExpression iso8601(DateTimeFormat::ISO8601_REGEX);
     if (iso8601.match(dateTime))
+        return true;
+
+    static RegularExpression sortable(DateTimeFormat::SORTABLE_REGEX);
+    if (sortable.match(dateTime))
         return true;
 
     static RegularExpression rfc822(DateTimeFormat::RFC822_REGEX);
