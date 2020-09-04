@@ -121,14 +121,14 @@ const std::string DateTimeFormat::MONTH_NAMES[] =
 
 DateTimeFormat::RegexList DateTimeFormat::REGEX_LIST =
 {
+    &DateTimeFormat::SORTABLE_REGEX,
 	&DateTimeFormat::ISO8601_REGEX,
 	&DateTimeFormat::RFC822_REGEX,
 	&DateTimeFormat::RFC1123_REGEX,
 	&DateTimeFormat::HTTP_REGEX,
 	&DateTimeFormat::RFC850_REGEX,
 	&DateTimeFormat::RFC1036_REGEX,
-	&DateTimeFormat::ASCTIME_REGEX,
-	&DateTimeFormat::SORTABLE_REGEX
+	&DateTimeFormat::ASCTIME_REGEX
 };
 
 
@@ -140,10 +140,34 @@ bool DateTimeFormat::hasFormat(const std::string& fmt)
 
 bool DateTimeFormat::isValid(const std::string& dateTime)
 {
-	for (const auto& f : REGEX_LIST)
-	{
-		if (RegularExpression(*f).match(dateTime)) return true;
-	}
+    static RegularExpression sortable(DateTimeFormat::SORTABLE_REGEX);
+    if (sortable.match(dateTime))
+        return true;
+
+    static RegularExpression iso8601(DateTimeFormat::ISO8601_REGEX);
+    if (iso8601.match(dateTime))
+        return true;
+
+    static RegularExpression rfc822(DateTimeFormat::RFC822_REGEX);
+    if (rfc822.match(dateTime))
+        return true;
+
+    static RegularExpression http(DateTimeFormat::HTTP_REGEX);
+    if (http.match(dateTime))
+        return true;
+
+    static RegularExpression rfc850(DateTimeFormat::RFC850_REGEX);
+    if (rfc850.match(dateTime))
+        return true;
+
+    static RegularExpression rfc1036(DateTimeFormat::RFC1036_REGEX);
+    if (rfc1036.match(dateTime))
+        return true;
+
+    static RegularExpression asctime(DateTimeFormat::ASCTIME_REGEX);
+    if (asctime.match(dateTime))
+        return true;
+
 	return false;
 }
 
