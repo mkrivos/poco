@@ -500,8 +500,8 @@ bool Extractor::extractToDynamic(std::size_t pos, Dynamic::Var& val)
     {
         case BOOLOID:
         {
-            success = (tempString[0] == 't');
-            if (success)
+            success = true;
+            if (tempString[0] == 't')
                 val = true;
             else
                 val = false;
