@@ -105,9 +105,9 @@ endif()
 
 find_package(OpenSSL REQUIRED)
 
-option(ENABLE_NETSSL "Enable NetSSL" ON)
-option(ENABLE_CRYPTO "Enable Crypto" ON)
-option(ENABLE_JWT "Enable JWT" ON)
+option(POCO_ENABLE_NETSSL "Enable NetSSL" ON)
+option(POCO_ENABLE_CRYPTO "Enable Crypto" ON)
+option(POCO_ENABLE_JWT "Enable JWT" ON)
 
 if(POCO_ENABLE_APACHECONNECTOR)
     find_package(APR REQUIRED)
