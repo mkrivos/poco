@@ -60,12 +60,12 @@ class JSON_API Object
 	///
 {
 public:
-	typedef SharedPtr<Object>                   Ptr;
-	typedef std::map<std::string, Dynamic::Var> ValueMap;
-	typedef ValueMap::value_type                ValueType;
-	typedef ValueMap::iterator                  Iterator;
-	typedef ValueMap::const_iterator            ConstIterator;
-	typedef std::vector<std::string>            NameList;
+	using Ptr = SharedPtr<Object>;
+	using ValueMap = std::map<std::string, Dynamic::Var>;
+	using ValueType = ValueMap::value_type;
+	using Iterator = ValueMap::iterator;
+	using ConstIterator = ValueMap::const_iterator;
+	using NameList = std::vector<std::string>;
 
 	explicit Object(int options = 0);
 		/// Creates an empty Object.
@@ -84,16 +84,16 @@ public:
 		/// Struct is not copied to keep the operation as
 		/// efficient as possible (when needed, it will be generated upon request).
 
-	Object(Object&& other);
+	Object(Object&& other) noexcept;
 		/// Move constructor
 
-	virtual ~Object();
+	~Object();
 		/// Destroys the Object.
 
-	Object &operator =(const Object &other);
+	Object &operator = (const Object &other);
 		// Assignment operator
 
-	Object &operator =(Object &&other);
+	Object &operator = (Object &&other) noexcept;
 		// Move asignment operator
 
 	void setEscapeUnicode(bool escape = true);
@@ -220,15 +220,11 @@ public:
 	static Poco::DynamicStruct makeStruct(const Object::Ptr& obj);
 		/// Utility function for creation of struct.
 
-#ifdef POCO_ENABLE_CPP11
-
 	static Poco::OrderedDynamicStruct makeOrderedStruct(const Object::Ptr& obj);
 		/// Utility function for creation of ordered struct.
 
 	operator const Poco::OrderedDynamicStruct& () const;
 		/// Cast operator to Poco::OrderedDynamiStruct.
-
-#endif // POCO_ENABLE_CPP11
 
 	operator const Poco::DynamicStruct& () const;
 		/// Cast operator to Poco::DynamiStruct.
@@ -241,9 +237,7 @@ public:
 private:
 	typedef std::deque<ValueMap::const_iterator>  KeyList;
 	typedef Poco::DynamicStruct::Ptr              StructPtr;
-#ifdef POCO_ENABLE_CPP11
 	typedef Poco::OrderedDynamicStruct::Ptr       OrdStructPtr;
-#endif // POCO_ENABLE_CPP11
 
 	void syncKeys(const KeyList& keys);
 
@@ -356,9 +350,7 @@ private:
 	//  so it must know whether to escape unicode or not.
 	bool              _escapeUnicode;
 	mutable StructPtr    _pStruct;
-#ifdef POCO_ENABLE_CPP11
 	mutable OrdStructPtr _pOrdStruct;
-#endif // POCO_ENABLE_CPP11
 	mutable bool         _modified;
 };
 
@@ -451,7 +443,6 @@ inline std::size_t Object::size() const
 
 inline void Object::remove(const std::string& key)
 {
-	_values.erase(key);
 	if (_preserveInsOrder)
 	{
 		KeyList::iterator it = _keys.begin();
@@ -465,6 +456,7 @@ inline void Object::remove(const std::string& key)
 			}
 		}
 	}
+	_values.erase(key);
 	_modified = true;
 }
 

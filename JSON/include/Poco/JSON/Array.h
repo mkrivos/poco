@@ -58,10 +58,10 @@ class JSON_API Array
 	/// ----
 {
 public:
-	typedef std::vector<Dynamic::Var>                 ValueVec;
-	typedef std::vector<Dynamic::Var>::iterator       Iterator;
-	typedef std::vector<Dynamic::Var>::const_iterator ConstIterator;
-	typedef SharedPtr<Array> Ptr;
+	using ValueVec = std::vector<Dynamic::Var>;
+	using Iterator = std::vector<Dynamic::Var>::iterator;
+	using ConstIterator = std::vector<Dynamic::Var>::const_iterator;
+	using Ptr = SharedPtr<Array>;
 
 	Array(int options = 0);
 		/// Creates an empty Array.
@@ -73,16 +73,16 @@ public:
 	Array(const Array& copy);
 		/// Creates an Array by copying another one.
 
-	Array(Array&& other);
+	Array(Array&& other) noexcept;
 		/// Move constructor
 
-	Array& operator=(const Array& other);
+	Array& operator = (const Array& other);
 		/// Assignment operator.
 
-	Array& operator=(Array&& other);
+	Array& operator = (Array&& other) noexcept;
 		/// Move assignment operator.
 
-	virtual ~Array();
+	~Array();
 		/// Destroys the Array.
 
 	void setEscapeUnicode(bool escape = true);

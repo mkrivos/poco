@@ -32,7 +32,7 @@ namespace Poco {
 namespace Dynamic {
 
 
-template <typename K, typename M = std::map<K, Var>, typename S = std::set<K> >
+template <typename K, typename M = std::map<K, Var>, typename S = std::set<K>>
 class Struct
 	/// Struct allows to define a named collection of Var objects.
 {
@@ -44,7 +44,7 @@ public:
 	typedef typename Struct<K>::Data::value_type ValueType;
 	typedef typename Struct<K>::Data::size_type SizeType;
 	typedef typename std::pair<typename Struct<K, M, S>::Iterator, bool> InsRetVal;
-	typedef typename Poco::SharedPtr<Struct<K, M, S> > Ptr;
+	typedef typename Poco::SharedPtr<Struct<K, M, S>> Ptr;
 
 	Struct(): _data()
 		/// Creates an empty Struct
@@ -62,15 +62,11 @@ public:
 		assignMap(val);
 	}
 
-#ifdef POCO_ENABLE_CPP11
-
 	template <typename T>
 	Struct(const OrderedMap<K, T>& val)
 	{
 		assignMap(val);
 	}
-
-#endif // POCO_ENABLE_CPP11
 
 	virtual ~Struct()
 		/// Destroys the Struct.
@@ -209,12 +205,12 @@ public:
 		/// Returns the var value of the element with the given name.
 		/// Throws a NotFoundException if the key does not exist.
 	{
-	ConstIterator it = find(key);
-	if(it == end())
-	{
-		throw NotFoundException("Key not found in Struct");
-	}
-	return it->second;
+		ConstIterator it = find(key);
+		if(it == end())
+		{
+			throw NotFoundException("Key not found in Struct");
+		}
+		return it->second;
 	}
 
 	template<typename DefT = Var>
@@ -253,7 +249,7 @@ private:
 
 
 template <>
-class VarHolderImpl<Struct<std::string, std::map<std::string, Var>, std::set<std::string> > >: public VarHolder
+class VarHolderImpl<Struct<std::string, std::map<std::string, Var>, std::set<std::string>>>: public VarHolder
 {
 public:
 	typedef std::string KeyType;
@@ -439,7 +435,7 @@ private:
 
 
 template <>
-class VarHolderImpl<Struct<int, std::map<int, Var>, std::set<int> > > : public VarHolder
+class VarHolderImpl<Struct<int, std::map<int, Var>, std::set<int>>> : public VarHolder
 {
 public:
 	typedef int KeyType;
@@ -624,11 +620,8 @@ private:
 };
 
 
-#ifdef POCO_ENABLE_CPP11
-
-
 template <>
-class VarHolderImpl<Struct<std::string, Poco::OrderedMap<std::string, Var>, Poco::OrderedSet<std::string> > > : public VarHolder
+class VarHolderImpl<Struct<std::string, Poco::OrderedMap<std::string, Var>, Poco::OrderedSet<std::string>>> : public VarHolder
 {
 public:
 	typedef std::string KeyType;
@@ -814,7 +807,7 @@ private:
 
 
 template <>
-class VarHolderImpl<Struct<int, Poco::OrderedMap<int, Var>, Poco::OrderedSet<int> > > : public VarHolder
+class VarHolderImpl<Struct<int, Poco::OrderedMap<int, Var>, Poco::OrderedSet<int>>> : public VarHolder
 {
 public:
 	typedef int KeyType;
@@ -999,17 +992,12 @@ private:
 };
 
 
-#endif // POCO_ENABLE_CPP11
-
-
 } // namespace Dynamic
 
 
 typedef Dynamic::Struct<std::string> DynamicStruct;
+typedef Dynamic::Struct<std::string, Poco::OrderedMap<std::string, Dynamic::Var>, Poco::OrderedSet<std::string>> OrderedDynamicStruct;
 
-#ifdef POCO_ENABLE_CPP11
-typedef Dynamic::Struct<std::string, Poco::OrderedMap<std::string, Dynamic::Var>, Poco::OrderedSet<std::string> > OrderedDynamicStruct;
-#endif // POCO_ENABLE_CPP11
 
 } // namespace Poco
 

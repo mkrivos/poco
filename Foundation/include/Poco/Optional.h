@@ -66,12 +66,27 @@ public:
 		_isSpecified(true)
 	{
 	}
-	
+
+	Optional(C&& value):
+		/// Creates a Optional by moving the given value.
+		_value(value),
+		_isSpecified(true)
+	{
+	}
+
 	Optional(const Optional& other):
 		/// Creates a Optional by copying another one.
 		_value(other._value),
 		_isSpecified(other._isSpecified)
 	{
+	}
+
+	Optional(Optional&& other) noexcept:
+		/// Creates a Optional by moving another one.
+		_value(std::move(other._value)),
+		_isSpecified(other._isSpecified)
+	{
+		other._isSpecified = false;
 	}
 
 	~Optional()
@@ -82,11 +97,19 @@ public:
 	Optional& assign(const C& value)
 		/// Assigns a value to the Optional.
 	{
-		_value  = value;
+		_value = value;
 		_isSpecified = true;
 		return *this;
 	}
-	
+
+	Optional& assign(C&& value)
+		/// Moves a value into the Optional.
+	{
+		_value = std::move(value);
+		_isSpecified = true;
+		return *this;
+	}
+
 	Optional& assign(const Optional& other)
 		/// Assigns another Optional.
 	{
@@ -94,15 +117,28 @@ public:
 		swap(tmp);
 		return *this;
 	}
-	
+
 	Optional& operator = (const C& value)
 	{
 		return assign(value);
 	}
 
+	Optional& operator = (C&& value)
+	{
+		return assign(std::move(value));
+	}
+
 	Optional& operator = (const Optional& other)
 	{
 		return assign(other);
+	}
+
+	Optional& operator = (Optional&& other) noexcept
+	{
+		_value = std::move(other._value);
+		_isSpecified = other._isSpecified;
+		other._isSpecified = false;
+		return *this;
 	}
 
 	void swap(Optional& other)
@@ -135,7 +171,7 @@ public:
 	{
 		return _isSpecified;
 	}
-	
+
 	void clear()
 		/// Clears the Optional.
 	{

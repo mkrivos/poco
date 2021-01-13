@@ -31,7 +31,7 @@ namespace Poco {
 namespace JSON {
 
 
-ParserImpl::ParserImpl(const Handler::Ptr& pHandler, std::size_t /*bufSize*/):
+ParserImpl::ParserImpl(const Handler::Ptr& pHandler, std::size_t bufSize):
 	_pJSON(new json_stream),
 	_pHandler(pHandler),
 	_depth(JSON_UNLIMITED_DEPTH),
@@ -233,7 +233,6 @@ bool ParserImpl::checkError()
 	if (err) throw Poco::JSON::JSONException(err);
 	return true;
 }
-
 
 
 } } // namespace Poco::JSON
