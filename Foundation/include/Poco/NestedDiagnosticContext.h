@@ -28,7 +28,7 @@
 #include <utility>
 
 #if defined(POCO_COMPILER_GCC) && (POCO_OS == POCO_OS_LINUX) && (POCO_OS != POCO_OS_CYGWIN)
-	#define POCO_HAS_BACKTRACE
+//	#define POCO_HAS_BACKTRACE
 #endif
 
 #ifdef POCO_HAS_BACKTRACE

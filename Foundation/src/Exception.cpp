@@ -127,10 +127,10 @@ void Exception::extendedMessage(const std::string& arg)
 void Exception::addBacktrace()
 {
 #ifdef POCO_EXCEPTION_BACKTRACE
-	if (NDC::hasBacktrace())
-	{
-		_msg.append(1, '\n').append(NDC::backtrace(2, 3));
-	}
+//	if (NDC::hasBacktrace())
+//	{
+//		_msg.append(1, '\n').append(NDC::backtrace(2, 3));
+//	}
 #endif
 }
 
